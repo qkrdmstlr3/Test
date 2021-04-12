@@ -6,7 +6,7 @@ module.exports = {
     extensions: ['.js', '.ts'],
   },
   devtool: 'source-map',
-  entry: ['./src/index.js'],
+  entry: ['./src/index.ts'],
   target: 'electron-renderer',
   module: {
     rules: [
