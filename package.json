@@ -1,0 +1,57 @@
+{
+  "name": "slly-vanilla",
+  "version": "1.0.0",
+  "description": "shellboy's planning application",
+  "main": "dist/main.js",
+  "scripts": {
+    "dev:all": "concurrently \"npm run dev:renderer\" \"npm run dev:electron\"",
+    "dev:electron": "NODE_ENV=development webpack --config webpack.electron.config.js --mode development && electron .",
+    "dev:renderer": "NODE_ENV=development webpack-dev-server --config webpack.renderer.config.js --mode development",
+    "build:all": "rm -rf dist && concurrently \"npm run build:renderer\" \"npm run build:electron\"",
+    "build:electron": "NODE_ENV=production webpack --config webpack.electron.config.js --mode production",
+    "build:renderer": "NODE_ENV=production webpack --config webpack.renderer.config.js --mode production",
+    "package": "npm run build:all && electron-builder --publish always",
+    "lint": "eslint src/**/*.js"
+  },
+  "build": {
+    "productName": "Slly",
+    "files": [
+      "dist/",
+      "node_modules/",
+      "package.json"
+    ],
+    "appId": "com.example.app",
+    "directories": {
+      "output": "dist"
+    }
+  },
+  "keywords": [
+    "slly"
+  ],
+  "author": {
+    "name": "shellboy",
+    "email": "qkrdmstlr3@naver.com",
+    "url": "https://github.com/qkrdmstlr3"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/qkrdmstlr3/slly/issues"
+  },
+  "homepage": "https://github.com/qkrdmstlr3/slly#readme",
+  "devDependencies": {
+    "@babel/core": "^7.13.15",
+    "@babel/preset-env": "^7.13.15",
+    "babel-loader": "^8.2.2",
+    "concurrently": "^6.0.1",
+    "electron": "^12.0.2",
+    "electron-builder": "^22.10.5",
+    "eslint": "^7.24.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "html-webpack-plugin": "^4.2.0",
+    "prettier": "^2.2.1",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.11.2"
+  }
+}
