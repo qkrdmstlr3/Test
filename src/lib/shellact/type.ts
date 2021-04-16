@@ -34,7 +34,7 @@ export interface EventFuncType {
 }
 
 export interface RenderType {
-  html: string;
-  eventFuncs: EventFuncType[];
-  css: string;
+  html?: string;
+  eventFuncs?: EventFuncType[];
+  css?: string;
 }
