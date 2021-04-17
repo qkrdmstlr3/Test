@@ -96,10 +96,11 @@ class Shellact extends HTMLElement {
   ): void {
     dom.addEventListener(type, (event: Event) => {
       event.stopPropagation();
-
       const isCorrectElement =
-        event.target instanceof HTMLElement &&
+        (event.target instanceof HTMLElement ||
+          event.target instanceof SVGElement) &&
         event.target.closest(`.${className}`);
+
       if (isCorrectElement) {
         func.call(this, event);
       }

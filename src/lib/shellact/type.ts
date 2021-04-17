@@ -29,7 +29,7 @@ export enum EventType {
 
 export interface EventFuncType {
   className: string;
-  func: (args: unknown) => void; // <T = unknown, R = unknown>(args?: T) => R;
+  func: (args: Event) => void; // <T = unknown, R = unknown>(args?: T) => R;
   type: EventType;
 }
 
