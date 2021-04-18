@@ -1,8 +1,18 @@
-import { ShellHTML, createComponent } from '@Lib/shell-html';
+import { ShellHTML, createComponent, useGlobalState } from '@Lib/shell-html';
 import styleSheet from './style.scss';
 
 class Layout extends ShellHTML {
+  connectedCallback() {
+    this.enrollObserving('page');
+  }
+
+  disconnectedCallback() {
+    this.releaseObserving('page');
+  }
+
   render() {
+    const pageName = useGlobalState('page');
+
     return {
       html: `
       <div class="layout">
@@ -11,7 +21,7 @@ class Layout extends ShellHTML {
         </header>
         <main class="main">
           <layout-nav></layout-nav>
-          <page-home></page-home>
+          <page-${pageName}></page-${pageName}>
         </main>
       </div>
       `,
