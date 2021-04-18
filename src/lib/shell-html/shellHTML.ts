@@ -1,6 +1,7 @@
 import { RenderType, EventFuncType } from './type';
+import { observe, disObserve } from './state';
 
-class Shellact extends HTMLElement {
+class ShellHTML extends HTMLElement {
   state: unknown;
 
   constructor(state: unknown = null) {
@@ -60,6 +61,14 @@ class Shellact extends HTMLElement {
       return this.shadowRoot.getElementById(id);
     }
     return null;
+  }
+
+  enrollObserving(key: string): void {
+    observe(key, this, this.rerender);
+  }
+
+  releaseObserving(key: string): void {
+    disObserve(key, this);
   }
 
   /**
@@ -122,4 +131,4 @@ class Shellact extends HTMLElement {
   }
 }
 
-export default Shellact;
+export default ShellHTML;

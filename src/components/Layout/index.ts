@@ -1,7 +1,7 @@
-import { Shellact, createComponent } from '@Lib/shellact';
+import { ShellHTML, createComponent } from '@Lib/shell-html';
 import styleSheet from './style.scss';
 
-class Layout extends Shellact {
+class Layout extends ShellHTML {
   render() {
     return {
       html: `
