@@ -1,0 +1,25 @@
+@import './variables.scss';
+
+@mixin home {
+  display: flex;
+  width: 1120px;
+  height: 100%;
+  border-top-left-radius: 10px;
+  background-color: $light-pink-color;
+  overflow: hidden;
+}
+
+@mixin subnav {
+  width: 15rem;
+  height: 100%;
+  background-color: white;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+
+  overflow: scroll;
+}
+
+@mixin content {
+  width: calc(100% - 15rem);
+  background-color: $light-pink-color;
+}
