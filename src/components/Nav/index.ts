@@ -1,9 +1,19 @@
-import { Shellact, createComponent, EventType } from '@Lib/shellact';
+import {
+  ShellHTML,
+  createComponent,
+  EventType,
+  useGlobalState,
+  setGlobalState,
+} from '@Lib/shell-html';
 import styleSheet from './style.scss';
 
-class Nav extends Shellact {
-  constructor() {
-    super('home');
+class Nav extends ShellHTML {
+  connectedCallback() {
+    this.enrollObserving('page');
+  }
+
+  disconnectedCallback() {
+    this.releaseObserving('page');
   }
 
   clickHandler(event: Event) {
@@ -11,13 +21,16 @@ class Nav extends Shellact {
       return;
     }
 
+    const pageName = useGlobalState('page');
     const svgId = event.target.closest('svg')?.id;
-    if (this.state !== svgId) {
-      this.setState(svgId);
+    if (pageName !== svgId) {
+      setGlobalState('page', svgId);
     }
   }
 
   render() {
+    const pageName = useGlobalState('page');
+
     return {
       css: styleSheet,
       eventFuncs: [
@@ -32,7 +45,7 @@ class Nav extends Shellact {
         <div class="nav__item">
           <svg id="home" version="1.1" xmlns="http://www.w3.org/2000/svg" 
           width="3rem" height="3rem" viewBox="0 0 460.298 460.297" 
-          style="opacity:${this.state === 'home' ? 1 : 0.4}">
+          style="opacity:${pageName === 'home' ? 1 : 0.4}">
             <g>
               <g>
                 <path d="M230.149,120.939L65.986,256.274c0,0.191-0.048,0.472-0.144,0.855c-0.094,0.38-0.144,0.656-0.144,0.852v137.041
@@ -51,7 +64,7 @@ class Nav extends Shellact {
         </div>
         <div class="nav__item">
           <svg id="calendar" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" 
-          style="opacity:${this.state === 'calendar' ? 1 : 0.4}">
+          style="opacity:${pageName === 'calendar' ? 1 : 0.4}">
             <path d="M279,364c0,22.056,17.944,40,40,40h47c22.056,0,40-17.944,40-40v-47c0-22.056-17.944-40-40-40h-47
                 c-22.056,0-40,17.944-40,40V364z M319,317h47l0.025,46.999c0,0-0.007,0.001-0.025,0.001h-47V317z"/>
             <circle cx="386" cy="210" r="20"/>
@@ -73,7 +86,7 @@ class Nav extends Shellact {
         </div>
         <div class="nav__item">
           <svg id="check" version="1.1" xmlns="http://www.w3.org/2000/svg" width="3rem" height="3rem" viewBox="0 0 405.272 405.272" 
-          style="opacity:${this.state === 'check' ? 1 : 0.4}">
+          style="opacity:${pageName === 'check' ? 1 : 0.4}">
             <path d="M393.401,124.425L179.603,338.208c-15.832,15.835-41.514,15.835-57.361,0L11.878,227.836
               c-15.838-15.835-15.838-41.52,0-57.358c15.841-15.841,41.521-15.841,57.355-0.006l81.698,81.699L336.037,67.064
               c15.841-15.841,41.523-15.829,57.358,0C409.23,82.902,409.23,108.578,393.401,124.425z"/>
@@ -81,7 +94,7 @@ class Nav extends Shellact {
         </div>
         <div class="nav__item">
           <svg id="note" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" 
-          style="opacity:${this.state === 'note' ? 1 : 0.4}">
+          style="opacity:${pageName === 'note' ? 1 : 0.4}">
             <g>
               <path d="M352.459,220c0-11.046-8.954-20-20-20h-206c-11.046,0-20,8.954-20,20s8.954,20,20,20h206
                 C343.505,240,352.459,231.046,352.459,220z"/>
@@ -101,7 +114,7 @@ class Nav extends Shellact {
         </div>
         <div class="nav__item nav__trash">
           <svg id="trash" viewBox="0 0 512 512" width="3.5rem" height="3.5rem" xmlns="http://www.w3.org/2000/svg" 
-          style="opacity:${this.state === 'trash' ? 1 : 0.4}">
+          style="opacity:${pageName === 'trash' ? 1 : 0.4}">
             <g>
               <path d="m424 64h-88v-16c0-26.467-21.533-48-48-48h-64c-26.467 0-48 21.533-48 48v16h-88c-22.056 0-40 17.944-40 40v56c0 8.836 7.164 16 16 16h8.744l13.823 290.283c1.221 25.636 22.281 45.717 47.945 45.717h242.976c25.665 0 46.725-20.081 47.945-45.717l13.823-290.283h8.744c8.836 0 16-7.164 16-16v-56c0-22.056-17.944-40-40-40zm-216-16c0-8.822 7.178-16 16-16h64c8.822 0 16 7.178 16 16v16h-96zm-128 56c0-4.411 3.589-8 8-8h336c4.411 0 8 3.589 8 8v40c-4.931 0-331.567 0-352 0zm313.469 360.761c-.407 8.545-7.427 15.239-15.981 15.239h-242.976c-8.555 0-15.575-6.694-15.981-15.239l-13.751-288.761h302.44z"/><path d="m256 448c8.836 0 16-7.164 16-16v-208c0-8.836-7.164-16-16-16s-16 7.164-16 16v208c0 8.836 7.163 16 16 16z"/><path d="m336 448c8.836 0 16-7.164 16-16v-208c0-8.836-7.164-16-16-16s-16 7.164-16 16v208c0 8.836 7.163 16 16 16z"/><path d="m176 448c8.836 0 16-7.164 16-16v-208c0-8.836-7.164-16-16-16s-16 7.164-16 16v208c0 8.836 7.163 16 16 16z"/>
             </g>
