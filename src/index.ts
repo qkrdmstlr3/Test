@@ -1,5 +1,6 @@
 // Dependencies
-import { render } from '@Lib/shellact';
+import { render } from '@Lib/shell-html';
+import '@Lib/state';
 import '@Common/style/reset.css';
 
 // Components
