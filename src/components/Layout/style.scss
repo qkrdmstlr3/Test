@@ -1,6 +1,8 @@
+@import '@Style/variables.scss';
+
 .main {
   height: 100%;
-  background-color: #ffdcdc;
+  background-color: $pink-color;
 }
 
 .header {
@@ -9,8 +11,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #ff8080;
-  background-color: #ffdcdc;
+
+  color: $deep-pink-color;
+  background-color: $pink-color;
   font-weight: bold;
   font-size: 1.1rem;
   -webkit-app-region: drag;
@@ -19,7 +22,7 @@
 .content {
   width: calc(100% - 5rem);
   border-top-left-radius: 10px;
-  background-color: #fcf2f2;
+  background-color: $light-pink-color;
 }
 
 .body {

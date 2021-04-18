@@ -23,7 +23,8 @@
       "@Common/*": ["src/common/*"],
       "@Components/*": ["src/components/*"],
       "@Lib/*": ["src/lib/*"],
-      "@Pages/*": ["src/pages/*"]
+      "@Pages/*": ["src/pages/*"],
+      "@Style/*": ["src/common/style/*"]
     }
   },
   "include": ["src"],

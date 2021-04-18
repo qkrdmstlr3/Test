@@ -1,6 +1,11 @@
 /**
  * mysetting
  */
+
+* {
+  box-sizing: border-box;
+}
+
 html {
   height: 100%;
   width: 100%;
@@ -12,10 +17,6 @@ body {
   width: 100%;
 }
 
-* {
-  box-sizing: border-box;
-}
-
 a {
   text-decoration: none;
   color: inherit;
@@ -25,6 +26,8 @@ button,
 button:active {
   outline: none;
   cursor: pointer;
+  border: 1px solid black;
+  background-color: transparent;
 }
 
 input:focus {
