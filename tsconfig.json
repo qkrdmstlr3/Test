@@ -16,7 +16,15 @@
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "Node",
     "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    /* 절대경로 설정 */
+    "baseUrl": ".",
+    "paths": {
+      "@Common/*": ["src/common/*"],
+      "@Components/*": ["src/components/*"],
+      "@Lib/*": ["src/lib/*"],
+      "@Pages/*": ["src/pages/*"]
+    }
   },
   "include": ["src"],
   "exclude": ["dist", "node_modules"]

@@ -1,4 +1,4 @@
-import { Shellact, createComponent, EventType } from '../../lib/shellact';
+import { Shellact, createComponent, EventType } from '@Lib/shellact';
 import styleSheet from './style.scss';
 
 class Nav extends Shellact {

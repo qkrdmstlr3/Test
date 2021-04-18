@@ -1,4 +1,4 @@
-import { Shellact, createComponent } from '../../lib/shellact';
+import { Shellact, createComponent } from '@Lib/shellact';
 import styleSheet from './style.scss';
 
 class Layout extends Shellact {

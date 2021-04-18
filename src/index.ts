@@ -1,8 +1,8 @@
-import { render } from './lib/shellact';
-import './common/style/reset.css';
+import { render } from '@Lib/shellact';
+import '@Common/style/reset.css';
 
 // Components
-import './components/Layout';
-import './components/Nav';
+import '@Components/Layout';
+import '@Components/Nav';
 
 render('layout-main', document.getElementById('root'));
