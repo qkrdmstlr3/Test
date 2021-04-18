@@ -5,15 +5,15 @@ class Layout extends Shellact {
   render() {
     return {
       html: `
-      <main class="main">
+      <div class="layout">
         <header class="header">
           <span>slly</span>
         </header>
-        <div class="body">
+        <main class="main">
           <layout-nav></layout-nav>
-          <div class="content"></div>
-        </div>
-      </main>
+          <page-home></page-home>
+        </main>
+      </div>
       `,
       css: styleSheet,
     };
