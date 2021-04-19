@@ -7,8 +7,7 @@ class Check extends ShellHTML {
       css: styleSheet,
       html: `
       <div class="check">
-        <nav class="subnav">
-        </nav>
+        <subnav-check></subnav-check>
         <div class="content">
           check
         </div>
