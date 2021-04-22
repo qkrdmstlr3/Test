@@ -23,3 +23,9 @@
   width: calc(100% - 15rem);
   background-color: $light-pink-color;
 }
+
+@mixin center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

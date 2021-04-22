@@ -8,10 +8,14 @@ class SubnavCheck extends ShellHTML {
   }
 
   clickNameHandler(event: Event) {
-    if (!event.target || !(event.target instanceof HTMLElement)) return;
+    if (!(event.target instanceof HTMLElement)) return;
 
-    const accordionTitleClass = event.target.closest('.accordion')?.classList;
-    accordionTitleClass?.toggle('choosed');
+    const accordionTitleId = event.target.closest('.accordion__header')?.id;
+    if (this.state !== accordionTitleId) {
+      this.setState(accordionTitleId);
+      return;
+    }
+    this.setState('');
   }
 
   render() {
@@ -28,16 +32,23 @@ class SubnavCheck extends ShellHTML {
       ],
       html: `
       <nav class="nav">
+        <div class="nav__top">
+          <h1 class="nav__top__title">할 일들</h1>
+          <button class="nav__top__button">+</button>
+        </div>
+        <ul class="nav__bottom">
         ${listNames.reduce((acc: string, name: string) => {
           return (acc += `
-          <div class="accordion">
+          <li class="accordion">
             <header class="accordion__header ${
               this.state === name ? 'choosed' : ''
             }" id="${name}">
               <h3 class="accordion__name">${name}</h3>
               <span>▼</span>
             </header>
-            <ul class="accordion__list">
+            ${
+              this.state === name
+                ? `<ul class="accordion__list">
               ${dummyChecklist[name].reduce((acc: string, { title, date }) => {
                 return (acc += `
                   <li class="accordion__item">
@@ -46,10 +57,13 @@ class SubnavCheck extends ShellHTML {
                   </li>
                 `);
               }, '')}
-            </ul>
-          </div>
+            </ul>`
+                : ''
+            }
+          </li>
           `);
         }, '')}
+        </ul>
       </nav>
       `,
     };

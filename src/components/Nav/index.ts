@@ -17,7 +17,7 @@ class Nav extends ShellHTML {
   }
 
   clickHandler(event: Event) {
-    if (!event.target || !(event.target instanceof SVGElement)) {
+    if (!(event.target instanceof SVGElement)) {
       return;
     }
 
