@@ -9,7 +9,7 @@ class Check extends ShellHTML {
       <div class="check">
         <subnav-check></subnav-check>
         <div class="content">
-          check
+          <post-check></post-check>
         </div>
       </div>`,
     };

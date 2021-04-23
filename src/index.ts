@@ -7,6 +7,7 @@ import '@Common/style/reset.css';
 import '@Components/Layout';
 import '@Components/Nav';
 import '@Components/SubnavCheck';
+import '@Components/CheckPost';
 
 // Pages
 import '@Pages/calendar';

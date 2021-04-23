@@ -27,3 +27,14 @@ export const dummyChecklist: CheckListType = {
   ],
   리스트4: [{ title: 'title10', date: '+3' }],
 };
+
+export const dummyCheckPost = {
+  title: 'Title',
+  status: 'doing',
+  startDate: '2021-03-20',
+  endDate: '2021-06-15',
+  content: `<div>
+    <h2>Hellllo</h2>
+    <div>conteeeeent</div>
+  </div>`,
+};
