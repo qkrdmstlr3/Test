@@ -1,3 +1,7 @@
+/**
+ * shellact
+ */
+
 export enum EventType {
   // mouse event
   click = 'click',
@@ -29,7 +33,7 @@ export enum EventType {
 
 export interface EventFuncType {
   className: string;
-  func: (args: unknown) => void; // <T = unknown, R = unknown>(args?: T) => R;
+  func: (args: Event) => void; // <T = unknown, R = unknown>(args?: T) => R;
   type: EventType;
 }
 
@@ -37,4 +41,14 @@ export interface RenderType {
   html?: string;
   eventFuncs?: EventFuncType[];
   css?: string;
+}
+
+/**
+ * state Type
+ */
+
+export interface AtomType {
+  key: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  initial: any;
 }

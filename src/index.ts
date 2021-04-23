@@ -1,5 +1,19 @@
-import { render } from './lib/shellact';
-import './components/layout';
-import './common/style/reset.css';
+// Dependencies
+import { render } from '@Lib/shell-html';
+import '@Lib/state';
+import '@Common/style/reset.css';
 
-render('layout-ui', document.getElementById('root'));
+// Components
+import '@Components/Layout';
+import '@Components/Nav';
+import '@Components/SubnavCheck';
+import '@Components/CheckPost';
+
+// Pages
+import '@Pages/calendar';
+import '@Pages/check';
+import '@Pages/home';
+import '@Pages/note';
+import '@Pages/trash';
+
+render('layout-main', document.getElementById('root'));

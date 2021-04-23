@@ -1,6 +1,7 @@
 import { RenderType, EventFuncType } from './type';
+import { observe, disObserve } from './state';
 
-class Shellact extends HTMLElement {
+class ShellHTML extends HTMLElement {
   state: unknown;
 
   constructor(state: unknown = null) {
@@ -62,6 +63,14 @@ class Shellact extends HTMLElement {
     return null;
   }
 
+  enrollObserving(key: string): void {
+    observe(key, this, this.rerender);
+  }
+
+  releaseObserving(key: string): void {
+    disObserve(key, this);
+  }
+
   /**
    * Rendering
    */
@@ -96,10 +105,11 @@ class Shellact extends HTMLElement {
   ): void {
     dom.addEventListener(type, (event: Event) => {
       event.stopPropagation();
-
       const isCorrectElement =
-        event.target instanceof HTMLElement &&
+        (event.target instanceof HTMLElement ||
+          event.target instanceof SVGElement) &&
         event.target.closest(`.${className}`);
+
       if (isCorrectElement) {
         func.call(this, event);
       }
@@ -121,4 +131,4 @@ class Shellact extends HTMLElement {
   }
 }
 
-export default Shellact;
+export default ShellHTML;
