@@ -20,6 +20,32 @@ class SubnavCheck extends ShellHTML {
 
   render() {
     const listNames = Object.keys(dummyChecklist);
+    const list = listNames.reduce((acc: string, name: string) => {
+      return (acc += `
+      <li class="accordion">
+        <header class="accordion__header ${
+          this.state === name ? 'choosed' : ''
+        }" id="${name}">
+          <h3 class="accordion__name">${name}</h3>
+          <span>▼</span>
+        </header>
+        ${
+          this.state === name
+            ? `<ul class="accordion__list">
+          ${dummyChecklist[name].reduce((acc: string, { title, date }) => {
+            return (acc += `
+              <li class="accordion__item">
+                <h4 class="accordion__item__name ${title}">${title}</h4>
+                <span>${date}</span>
+              </li>
+            `);
+          }, '')}
+        </ul>`
+            : ''
+        }
+      </li>
+      `);
+    }, '');
 
     return {
       css: styleSheet,
@@ -37,32 +63,7 @@ class SubnavCheck extends ShellHTML {
           <button class="nav__top__button">+</button>
         </div>
         <ul class="nav__bottom">
-        ${listNames.reduce((acc: string, name: string) => {
-          return (acc += `
-          <li class="accordion">
-            <header class="accordion__header ${
-              this.state === name ? 'choosed' : ''
-            }" id="${name}">
-              <h3 class="accordion__name">${name}</h3>
-              <span>▼</span>
-            </header>
-            ${
-              this.state === name
-                ? `<ul class="accordion__list">
-              ${dummyChecklist[name].reduce((acc: string, { title, date }) => {
-                return (acc += `
-                  <li class="accordion__item">
-                    <h4 class="accordion__item__name ${title}">${title}</h4>
-                    <span>${date}</span>
-                  </li>
-                `);
-              }, '')}
-            </ul>`
-                : ''
-            }
-          </li>
-          `);
-        }, '')}
+          ${list}
         </ul>
       </nav>
       `,
