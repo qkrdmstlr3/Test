@@ -1,6 +1,6 @@
 {
   "name": "slly-vanilla",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "shellboy's planning application",
   "main": "dist/main.js",
   "scripts": {
@@ -60,6 +60,8 @@
     "css-loader": "^5.2.1",
     "electron": "^12.0.2",
     "electron-builder": "^22.10.5",
+    "electron-log": "^4.3.4",
+    "electron-updater": "^4.3.8",
     "eslint": "^7.24.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-prettier": "^3.3.1",
