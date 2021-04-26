@@ -5,13 +5,13 @@
   "main": "dist/main.js",
   "scripts": {
     "dev:all": "concurrently \"npm run dev:renderer\" \"npm run dev:electron\"",
-    "dev:electron": "NODE_ENV=development webpack --config webpack.electron.config.js --mode development && electron .",
-    "dev:renderer": "NODE_ENV=development webpack-dev-server --config webpack.renderer.config.js --mode development",
+    "dev:electron": "NODE_ENV=development webpack --config ./configs/webpack.electron.prod.js --mode development && electron .",
+    "dev:renderer": "NODE_ENV=development webpack-dev-server --config ./configs/webpack.renderer.dev.js --mode development",
     "build:all": "rm -rf dist && concurrently \"npm run build:renderer\" \"npm run build:electron\"",
-    "build:electron": "NODE_ENV=production webpack --config webpack.electron.config.js --mode production",
-    "build:renderer": "NODE_ENV=production webpack --config webpack.renderer.config.js --mode production",
+    "build:electron": "NODE_ENV=production webpack --config ./configs/webpack.electron.prod.js --mode production",
+    "build:renderer": "NODE_ENV=production webpack --config ./configs/webpack.renderer.prod.js --mode production",
     "package": "npm run build:all && electron-builder --publish always",
-    "lint": "eslint src/**/*.js"
+    "lint": "eslint src/**/*.ts"
   },
   "build": {
     "productName": "Slly",
