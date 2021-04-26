@@ -1,0 +1,82 @@
+@import '/src/common/style/mixin.scss';
+@import '/src/common/style/variables.scss';
+
+.nav {
+  @include subnav;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  user-select: none;
+
+  &__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &__title {
+      font-size: 1.8rem;
+    }
+
+    &__button {
+      @include center;
+      width: 2rem;
+      height: 2rem;
+      padding: 0;
+      border-radius: 1rem;
+      outline: none;
+      font-size: 2rem;
+    }
+  }
+
+  &__bottom {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+}
+
+.accordion {
+  &__header,
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.2rem 0;
+    padding: 0.5rem;
+
+    border: 1px solid $pink-color;
+    border-radius: 5px;
+    color: $black-color;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $pink-color;
+    }
+  }
+
+  &__header {
+    color: $deep-pink-color;
+    border: 1px solid $deep-pink-color;
+
+    &:hover {
+      color: white;
+      background-color: $deep-pink-color;
+    }
+  }
+
+  &__name,
+  &__item__name {
+    margin: 0;
+  }
+
+  &__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow: hidden;
+  }
+}
+
+.choosed {
+  color: white;
+  background-color: $deep-pink-color;
+}

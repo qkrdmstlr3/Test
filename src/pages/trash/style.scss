@@ -1,0 +1,14 @@
+@import '/src/common/style/mixin.scss';
+@import '/src/common/style/variables.scss';
+
+.subnav {
+  @include subnav;
+}
+
+.trash {
+  @include main;
+}
+
+.content {
+  @include content;
+}
