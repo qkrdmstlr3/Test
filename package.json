@@ -23,6 +23,16 @@
     "appId": "com.example.app",
     "directories": {
       "output": "dist"
+    },
+    "mac": {
+      "target": [
+        "default"
+      ],
+      "icon": "./src/assets/icons/icon.icns"
+    },
+    "dmg": {
+      "title": "Slly",
+      "icon": "./src/assets/icons/icon.icns"
     }
   },
   "keywords": [
