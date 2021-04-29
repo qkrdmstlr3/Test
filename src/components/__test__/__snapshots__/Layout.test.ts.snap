@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Layout Component test snapshot 1`] = `
+ShadowRoot {
+  Symbol(SameObject caches): Object {
+    "childNodes": NodeList [
+      <div
+        class="layout"
+      >
+        <header
+          class="header"
+        >
+          <span>
+            slly
+          </span>
+        </header>
+        <main
+          class="main"
+        >
+          <layout-nav />
+          <page-home />
+        </main>
+      </div>,
+      <style>
+        [object Object]
+      </style>,
+    ],
+  },
+}
+`;
