@@ -6,7 +6,8 @@
   "scripts": {
     "dev:all": "concurrently \"npm run dev:renderer\" \"npm run dev:electron\"",
     "dev:electron": "NODE_ENV=development webpack --config ./configs/webpack.electron.prod.js --mode development && electron .",
-    "dev:renderer": "NODE_ENV=development webpack-dev-server --config ./configs/webpack.renderer.dev.js --mode development",
+    "dev:renderer": "NODE_ENV=development webpack-dev-server --config ./configs/webpack.renderer.prod.js --mode development",
+    "dev:renderer:only": "NODE_ENV=development webpack-dev-server --config ./configs/webpack.renderer.dev.js --mode development",
     "build:all": "rm -rf dist && concurrently \"npm run build:renderer\" \"npm run build:electron\"",
     "build:electron": "NODE_ENV=production webpack --config ./configs/webpack.electron.prod.js --mode production",
     "build:renderer": "NODE_ENV=production webpack --config ./configs/webpack.renderer.prod.js --mode production",
@@ -81,5 +82,9 @@
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.11.2"
+  },
+  "dependencies": {
+    "nedb-promises": "^4.1.2",
+    "short-uuid": "^4.1.0"
   }
 }
