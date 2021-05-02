@@ -1,16 +1,21 @@
-import { ShellHTML, createComponent, useGlobalState } from '@Lib/shell-html';
+import {
+  ShellHTML,
+  createComponent,
+  useGlobalState,
+  RenderType,
+} from '@Lib/shell-html';
 import styleSheet from './style.scss';
 
 class Layout extends ShellHTML {
-  connectedCallback() {
+  connectedCallback(): void {
     this.enrollObserving('page');
   }
 
-  disconnectedCallback() {
+  disconnectedCallback(): void {
     this.releaseObserving('page');
   }
 
-  render() {
+  render(): RenderType {
     const pageName = useGlobalState('page');
 
     return {
@@ -31,3 +36,5 @@ class Layout extends ShellHTML {
 }
 
 createComponent('layout-main', Layout);
+
+export default Layout;
