@@ -63,6 +63,30 @@ describe('SubnavCheck Component test', () => {
     expect(a.innerHTML).toContain('새 목록');
   });
 
+  it('change list name test', () => {
+    if (!subnavComponent) return;
+
+    const firstItem = getByTestId(subnavComponent, dummyChecklist[0].id);
+    const modifyButton = getByTestId(firstItem, 'modify_button');
+    expect(modifyButton instanceof Element).toBeTruthy();
+    fireEvent.click(modifyButton as Element);
+
+    const input = getByTestId(
+      subnavComponent.childNodes[0] as HTMLElement,
+      'test_input'
+    );
+    expect(input instanceof HTMLInputElement).toBeTruthy();
+    (input as HTMLInputElement).value = '테스트 목록';
+
+    const form = getByTestId(subnavComponent, 'test_form');
+    expect(form instanceof HTMLFormElement).toBeTruthy();
+    fireEvent.submit(form);
+
+    expect(
+      getByTestId(subnavComponent, dummyChecklist[0].id).innerHTML
+    ).toContain('테스트 목록');
+  });
+
   it('snapshot', () => {
     expect(subnavComponent).toMatchSnapshot();
   });

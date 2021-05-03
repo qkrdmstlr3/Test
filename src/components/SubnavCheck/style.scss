@@ -71,12 +71,27 @@
   }
 
   &__header {
+    height: 1.5rem;
     color: $deep-pink-color;
     border: 1px solid $deep-pink-color;
 
     &:hover {
       color: white;
       background-color: $deep-pink-color;
+      .accordion__header__buttons {
+        display: block;
+      }
+    }
+
+    &__buttons {
+      display: none;
+      button {
+        background-color: transparent;
+        border: none;
+        color: white;
+        cursor: pointer;
+        outline: none;
+      }
     }
   }
 
@@ -104,6 +119,22 @@
     padding: 0;
     list-style: none;
     overflow: hidden;
+  }
+
+  &__input {
+    padding: none;
+    border: none;
+
+    color: white;
+    font-weight: bold;
+    border-bottom: 1px solid white;
+    background-color: $deep-pink-color;
+    outline: none;
+
+    &::placeholder {
+      color: white;
+      opacity: 0.8;
+    }
   }
 }
 

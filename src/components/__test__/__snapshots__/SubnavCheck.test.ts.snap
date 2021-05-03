@@ -35,16 +35,21 @@ ShadowRoot {
               <h3
                 class="accordion__name"
               >
-                리스트1
+                테스트 목록
               </h3>
               <div
                 class="accordion__header__buttons"
               >
-                <button>
-                  수정
+                <button
+                  class="accordion__button__modify"
+                  data-testid="modify_button"
+                >
+                  ℳ
                 </button>
-                <button>
-                  삭제
+                <button
+                  class="accordion__button__delete"
+                >
+                  ✖️
                 </button>
               </div>
             </header>
@@ -65,11 +70,16 @@ ShadowRoot {
               <div
                 class="accordion__header__buttons"
               >
-                <button>
-                  수정
+                <button
+                  class="accordion__button__modify"
+                  data-testid="modify_button"
+                >
+                  ℳ
                 </button>
-                <button>
-                  삭제
+                <button
+                  class="accordion__button__delete"
+                >
+                  ✖️
                 </button>
               </div>
             </header>
@@ -90,11 +100,16 @@ ShadowRoot {
               <div
                 class="accordion__header__buttons"
               >
-                <button>
-                  수정
+                <button
+                  class="accordion__button__modify"
+                  data-testid="modify_button"
+                >
+                  ℳ
                 </button>
-                <button>
-                  삭제
+                <button
+                  class="accordion__button__delete"
+                >
+                  ✖️
                 </button>
               </div>
             </header>
