@@ -13,4 +13,11 @@ export default function checkListIpcMain(mainWindow: BrowserWindow): void {
   ipcMain.on('checklist:add', async (event, list) => {
     await db.checklist?.insert(list);
   });
+
+  ipcMain.on('checklist:modify:name', async (event, data) => {
+    await db.checklist?.update(
+      { id: data.id },
+      { $set: { name: data.newName } }
+    );
+  });
 }
