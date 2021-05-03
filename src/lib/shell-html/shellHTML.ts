@@ -2,7 +2,8 @@ import { RenderType, EventFuncType } from './type';
 import { observe, disObserve } from './state';
 
 class ShellHTML extends HTMLElement {
-  state: unknown;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  state: any;
 
   constructor(state: unknown = null) {
     super();
