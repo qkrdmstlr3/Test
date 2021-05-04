@@ -1,5 +1,15 @@
 {
-  "presets": ["@babel/preset-env", "@babel/preset-typescript"],
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "node": "current"
+        }
+      }
+    ],
+    "@babel/preset-typescript"
+  ],
   "plugins": [
     [
       "module-resolver",
@@ -10,7 +20,8 @@
           "@Components": "./src/components",
           "@Lib": "./src/lib",
           "@Pages": "./src/pages",
-          "@Style": "./src/common/style"
+          "@Style": "./src/common/style",
+          "@Types": "./src/types"
         }
       }
     ]

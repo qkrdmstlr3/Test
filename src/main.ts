@@ -1,7 +1,9 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import electronLog from 'electron-log';
 import path from 'path';
+import { executeDB } from './electron/db';
+import ipcMains from './electron/ipc';
 
 let mainWindow: Electron.BrowserWindow | null;
 const isDev = process.env.NODE_ENV === 'development';
@@ -28,11 +30,7 @@ function createWindow() {
     mainWindow = null;
   });
 
-  ipcMain.on('todo:add', (event, todo) => {
-    if (mainWindow) {
-      mainWindow.webContents.send('todo:add', todo);
-    }
-  });
+  ipcMains(mainWindow);
 }
 
 // updater
@@ -70,6 +68,7 @@ autoUpdater.on('update-downloaded', () => {
 });
 
 app.on('ready', () => {
+  executeDB(app, isDev);
   createWindow();
   autoUpdater.checkForUpdates();
 });

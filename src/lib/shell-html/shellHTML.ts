@@ -2,7 +2,8 @@ import { RenderType, EventFuncType } from './type';
 import { observe, disObserve } from './state';
 
 class ShellHTML extends HTMLElement {
-  state: unknown;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  state: any;
 
   constructor(state: unknown = null) {
     super();
@@ -83,7 +84,7 @@ class ShellHTML extends HTMLElement {
     dom: ShadowRoot
   ): void {
     // FIXME: applying sanitize html
-    dom.innerHTML = html.trim().replaceAll(/>[ |\n]*</g, '><');
+    dom.innerHTML = html.trim().replace(/>[ |\n]*</g, '><');
 
     if (css) {
       this.renderCSS(css, dom);
@@ -122,7 +123,7 @@ class ShellHTML extends HTMLElement {
     if (element && element.html) {
       const oldDOM = this.shadowRoot;
       const newDOM = document.createElement('div');
-      newDOM.innerHTML = element.html.trim().replaceAll(/>[ |\n]*</g, '><');
+      newDOM.innerHTML = element.html.trim().replace(/>[ |\n]*</g, '><');
 
       if (!oldDOM || oldDOM.textContent == newDOM.textContent) return;
       this.compareAndReplaceNodeTree(oldDOM, newDOM, newDOM.childNodes);

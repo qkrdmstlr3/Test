@@ -24,6 +24,22 @@
       border-radius: 1rem;
       outline: none;
       font-size: 2rem;
+      border: 2px solid white;
+
+      color: $deep-pink-color;
+      background-color: white;
+      border-left-color: $pink-color;
+      border-top-color: $pink-color;
+      border-right-color: $deep-pink-color;
+      border-bottom-color: $deep-pink-color;
+      cursor: pointer;
+
+      &:active {
+        border-left-color: $deep-pink-color;
+        border-top-color: $deep-pink-color;
+        border-right-color: $pink-color;
+        border-bottom-color: $pink-color;
+      }
     }
   }
 
@@ -35,6 +51,7 @@
 }
 
 .accordion {
+  &__plus,
   &__header,
   &__item {
     display: flex;
@@ -54,11 +71,40 @@
   }
 
   &__header {
+    height: 1.5rem;
     color: $deep-pink-color;
     border: 1px solid $deep-pink-color;
 
     &:hover {
       color: white;
+      background-color: $deep-pink-color;
+      .accordion__header__buttons {
+        display: block;
+      }
+    }
+
+    &__buttons {
+      display: none;
+      button {
+        background-color: transparent;
+        border: none;
+        color: white;
+        cursor: pointer;
+        outline: none;
+      }
+    }
+  }
+
+  &__plus {
+    @include center;
+    padding: 0;
+
+    color: white;
+    background-color: $pink-color;
+    font-weight: bold;
+    font-size: 2rem;
+
+    &:hover {
       background-color: $deep-pink-color;
     }
   }
@@ -73,6 +119,22 @@
     padding: 0;
     list-style: none;
     overflow: hidden;
+  }
+
+  &__input {
+    padding: none;
+    border: none;
+
+    color: white;
+    font-weight: bold;
+    border-bottom: 1px solid white;
+    background-color: $deep-pink-color;
+    outline: none;
+
+    &::placeholder {
+      color: white;
+      opacity: 0.8;
+    }
   }
 }
 

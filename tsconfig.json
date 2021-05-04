@@ -11,7 +11,7 @@
     /**/
     "allowJs": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
+    "isolatedModules": false,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "Node",
@@ -24,9 +24,10 @@
       "@Components/*": ["src/components/*"],
       "@Lib/*": ["src/lib/*"],
       "@Pages/*": ["src/pages/*"],
-      "@Style/*": ["src/common/style/*"]
+      "@Style/*": ["src/common/style/*"],
+      "@Types/*": ["src/types/*"]
     }
   },
   "include": ["src"],
-  "exclude": ["dist", "node_modules"]
+  "exclude": ["dist", "node_modules", "configs"]
 }

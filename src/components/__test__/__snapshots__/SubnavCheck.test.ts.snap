@@ -1,0 +1,134 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SubnavCheck Component test snapshot 1`] = `
+ShadowRoot {
+  Symbol(SameObject caches): Object {
+    "childNodes": NodeList [
+      <nav
+        class="nav"
+      >
+        <div
+          class="nav__top"
+        >
+          <h1
+            class="nav__top__title"
+          >
+            할 일들
+          </h1>
+          <button
+            class="nav__top__button"
+          >
+            +
+          </button>
+        </div>
+        <ul
+          class="nav__bottom"
+        >
+          <li
+            class="accordion"
+          >
+            <header
+              class="accordion__header "
+              data-testid="list1"
+              id="list1"
+            >
+              <h3
+                class="accordion__name"
+              >
+                리스트1
+              </h3>
+              <div
+                class="accordion__header__buttons"
+              >
+                <button
+                  class="accordion__button__modify"
+                  data-testid="modify_button"
+                >
+                  ℳ
+                </button>
+                <button
+                  class="accordion__button__delete"
+                  data-testid="delete_button"
+                >
+                  ✖️
+                </button>
+              </div>
+            </header>
+          </li>
+          <li
+            class="accordion"
+          >
+            <header
+              class="accordion__header "
+              data-testid="list2"
+              id="list2"
+            >
+              <h3
+                class="accordion__name"
+              >
+                리스트2
+              </h3>
+              <div
+                class="accordion__header__buttons"
+              >
+                <button
+                  class="accordion__button__modify"
+                  data-testid="modify_button"
+                >
+                  ℳ
+                </button>
+                <button
+                  class="accordion__button__delete"
+                  data-testid="delete_button"
+                >
+                  ✖️
+                </button>
+              </div>
+            </header>
+          </li>
+          <li
+            class="accordion"
+          >
+            <header
+              class="accordion__header "
+              data-testid="list3"
+              id="list3"
+            >
+              <h3
+                class="accordion__name"
+              >
+                리스트3
+              </h3>
+              <div
+                class="accordion__header__buttons"
+              >
+                <button
+                  class="accordion__button__modify"
+                  data-testid="modify_button"
+                >
+                  ℳ
+                </button>
+                <button
+                  class="accordion__button__delete"
+                  data-testid="delete_button"
+                >
+                  ✖️
+                </button>
+              </div>
+            </header>
+          </li>
+          <li
+            class="accordion__plus"
+            data-testid="add_button"
+          >
+             + 
+          </li>
+        </ul>
+      </nav>,
+      <style>
+        [object Object]
+      </style>,
+    ],
+  },
+}
+`;
