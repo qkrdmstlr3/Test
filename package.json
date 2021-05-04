@@ -6,7 +6,8 @@
   "scripts": {
     "dev:all": "concurrently \"npm run dev:renderer\" \"npm run dev:electron\"",
     "dev:electron": "NODE_ENV=development webpack --config ./configs/webpack.electron.prod.js --mode development && electron .",
-    "dev:renderer": "NODE_ENV=development webpack-dev-server --config ./configs/webpack.renderer.dev.js --mode development",
+    "dev:renderer": "NODE_ENV=development webpack-dev-server --config ./configs/webpack.renderer.prod.js --mode development",
+    "dev:renderer:only": "NODE_ENV=development webpack-dev-server --config ./configs/webpack.renderer.dev.js --mode development",
     "build:all": "rm -rf dist && concurrently \"npm run build:renderer\" \"npm run build:electron\"",
     "build:electron": "NODE_ENV=production webpack --config ./configs/webpack.electron.prod.js --mode production",
     "build:renderer": "NODE_ENV=production webpack --config ./configs/webpack.renderer.prod.js --mode production",
@@ -55,6 +56,7 @@
     "@babel/preset-typescript": "^7.13.0",
     "@testing-library/dom": "^7.30.4",
     "@testing-library/jest-dom": "^5.12.0",
+    "@types/lodash": "^4.14.168",
     "@typescript-eslint/eslint-plugin": "^4.21.0",
     "@typescript-eslint/parser": "^4.21.0",
     "babel-jest": "^26.6.3",
@@ -81,5 +83,10 @@
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.11.2"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "nedb-promises": "^4.1.2",
+    "short-uuid": "^4.1.0"
   }
 }
