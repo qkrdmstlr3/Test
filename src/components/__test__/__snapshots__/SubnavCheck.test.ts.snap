@@ -35,7 +35,7 @@ ShadowRoot {
               <h3
                 class="accordion__name"
               >
-                테스트 목록
+                리스트1
               </h3>
               <div
                 class="accordion__header__buttons"
@@ -48,6 +48,7 @@ ShadowRoot {
                 </button>
                 <button
                   class="accordion__button__delete"
+                  data-testid="delete_button"
                 >
                   ✖️
                 </button>
@@ -78,6 +79,7 @@ ShadowRoot {
                 </button>
                 <button
                   class="accordion__button__delete"
+                  data-testid="delete_button"
                 >
                   ✖️
                 </button>
@@ -108,6 +110,7 @@ ShadowRoot {
                 </button>
                 <button
                   class="accordion__button__delete"
+                  data-testid="delete_button"
                 >
                   ✖️
                 </button>

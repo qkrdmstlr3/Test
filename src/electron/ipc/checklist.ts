@@ -20,4 +20,8 @@ export default function checkListIpcMain(mainWindow: BrowserWindow): void {
       { $set: { name: data.newName } }
     );
   });
+
+  ipcMain.on('checklist:delete', async (event, data) => {
+    await db.checklist?.remove({ id: data.id }, {});
+  });
 }

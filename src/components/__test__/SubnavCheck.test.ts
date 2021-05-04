@@ -1,11 +1,17 @@
+/* dependencies */
 import { fireEvent, getByTestId, getByText } from '@testing-library/dom';
 import '@testing-library/jest-dom/extend-expect';
+import _ from 'lodash';
+
+/* component, state */
 import SubnavCheck from '../SubnavCheck';
 import '@Lib/state';
 import { useGlobalState, setGlobalState } from '@Lib/shell-html';
 
 let subnav: SubnavCheck;
 let subnavComponent: HTMLElement;
+
+window.confirm = jest.fn(() => true);
 
 const dummyChecklist = [
   { id: 'list1', name: '리스트1', posts: [] },
@@ -20,7 +26,7 @@ describe('SubnavCheck Component test', () => {
     if (subnav.shadowRoot?.childNodes[0]) {
       subnavComponent = (subnav.shadowRoot as unknown) as HTMLElement;
     }
-    setGlobalState('checklist', dummyChecklist);
+    setGlobalState('checklist', _.cloneDeep(dummyChecklist));
   });
 
   afterEach(() => {
@@ -36,7 +42,7 @@ describe('SubnavCheck Component test', () => {
     });
   });
 
-  it('select list test', () => {
+  it('select item test', () => {
     if (!subnavComponent) return;
 
     fireEvent.click(getByTestId(subnavComponent, dummyChecklist[0].id), {
@@ -52,7 +58,7 @@ describe('SubnavCheck Component test', () => {
     expect(thirdItem.classList.contains('choosed')).toBeFalsy();
   });
 
-  it('create new list test', () => {
+  it('create new item test', () => {
     if (!subnavComponent) return;
 
     fireEvent.click(getByTestId(subnavComponent, 'add_button'));
@@ -63,12 +69,11 @@ describe('SubnavCheck Component test', () => {
     expect(a.innerHTML).toContain('새 목록');
   });
 
-  it('change list name test', () => {
+  it('change item name test', () => {
     if (!subnavComponent) return;
 
     const firstItem = getByTestId(subnavComponent, dummyChecklist[0].id);
     const modifyButton = getByTestId(firstItem, 'modify_button');
-    expect(modifyButton instanceof Element).toBeTruthy();
     fireEvent.click(modifyButton as Element);
 
     const input = getByTestId(
@@ -85,6 +90,19 @@ describe('SubnavCheck Component test', () => {
     expect(
       getByTestId(subnavComponent, dummyChecklist[0].id).innerHTML
     ).toContain('테스트 목록');
+  });
+
+  it('delete item test', () => {
+    if (!subnavComponent) return;
+
+    const firstItem = getByTestId(subnavComponent, dummyChecklist[0].id);
+    const deleteButton = getByTestId(firstItem, 'delete_button');
+    fireEvent.click(deleteButton);
+    expect(window.confirm).toBeCalled();
+
+    expect(
+      subnavComponent.innerHTML.includes(dummyChecklist[0].name)
+    ).toBeFalsy();
   });
 
   it('snapshot', () => {

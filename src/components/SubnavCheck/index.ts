@@ -67,7 +67,6 @@ class SubnavCheck extends ShellHTML {
         selectedItem: accordionItemId,
         toModifyItem: true,
       });
-      return;
     }
   }
 
@@ -76,22 +75,41 @@ class SubnavCheck extends ShellHTML {
     if (!(event.target instanceof HTMLFormElement)) return;
 
     // queryselector사용을 바꾸면 좋을 것 같은데...
-    const listname = event.target.querySelector('input')?.value;
-    if (!listname || !listname.length) return; //TODO: alert
+    const newName = event.target.querySelector('input')?.value;
+    if (!newName || !newName.length) return; //TODO: alert
 
-    const lists = useGlobalState('checklist');
-    lists.forEach((list: CheckListType) => {
-      if (list.id === this.state.selectedItem) {
-        list.name = listname;
+    const list = useGlobalState('checklist');
+    list.forEach((item: CheckListType) => {
+      if (item.id === this.state.selectedItem) {
+        item.name = newName;
       }
     });
 
     ipcRenderer?.send('checklist:modify:name', {
       id: this.state.selectedItem,
-      newName: listname,
+      newName: newName,
     });
-    setGlobalState('checklist', lists);
+    setGlobalState('checklist', list);
     this.setState({ ...this.state, toModifyItem: false });
+  }
+
+  deleteItemHandler(event: Event): void {
+    event.preventDefault();
+    if (!(event.target instanceof HTMLElement)) return;
+
+    const deleteMessage =
+      '하위 글들이 모두 사라집니다.\n 정말 삭제하시겠습니까? ';
+    const isDelete = confirm(deleteMessage);
+    if (!isDelete) return;
+
+    const list = useGlobalState('checklist');
+    setGlobalState(
+      'checklist',
+      list.filter((item: CheckListType) => item.id !== this.state.selectedItem)
+    );
+    ipcRenderer?.send('checklist:delete', {
+      id: this.state.selectedItem,
+    });
   }
 
   render(): RenderType {
@@ -123,7 +141,7 @@ class SubnavCheck extends ShellHTML {
             this.state.toModifyItem && this.state.selectedItem === id
               ? ''
               : `<button class="accordion__button__modify" data-testid="modify_button">ℳ</button>
-            <button class="accordion__button__delete">✖️</button>`
+            <button class="accordion__button__delete" data-testid="delete_button">✖️</button>`
           }
           </div>
         </header>
@@ -143,6 +161,11 @@ class SubnavCheck extends ShellHTML {
         {
           className: 'accordion__button__modify',
           func: this.modifyButtonHandler,
+          type: EventType.click,
+        },
+        {
+          className: 'accordion__button__delete',
+          func: this.deleteItemHandler,
           type: EventType.click,
         },
         {
