@@ -26,7 +26,6 @@ class Nav extends ShellHTML {
     const svgId = event.target.closest('svg')?.id;
     if (pageName !== svgId) {
       setGlobalState('page', svgId);
-      // console.log(useGlobalState('page'));
     }
   }
 

@@ -6,35 +6,42 @@ import {
   useGlobalState,
   setGlobalState,
 } from '@Lib/shell-html';
-import { CheckListType } from '@Types/types';
+import { CheckListType, CheckPostType } from '@Types/types';
 import styleSheet from './style.scss';
 import { ipcRenderer } from 'electron';
 import short from 'short-uuid';
+import { CheckPostStatusType } from '../../types/enum';
+import { getDday } from '../../utils/calcDate';
 
 class SubnavCheck extends ShellHTML {
   constructor() {
     super({
-      selectedItem: '',
+      selectedItem: useGlobalState('checkpostControl').currentCheckListId,
       toModifyItem: false,
     });
   }
 
   connectedCallback(): void {
     this.enrollObserving('checklist');
+    this.enrollObserving('checkpostControl');
 
+    this.getList();
+  }
+
+  disconnectedCallback(): void {
+    this.releaseObserving('checklist');
+    this.releaseObserving('checkpostControl');
+    ipcRenderer?.removeAllListeners('checklist:read:all');
+  }
+
+  getList(): void {
     const list = useGlobalState('checklist');
     if (!list.length) {
       ipcRenderer?.send('checklist:read:all');
       ipcRenderer?.once('checklist:read:all', (event, list) => {
-        list.forEach((item: CheckListType) => (item.posts = []));
         setGlobalState('checklist', list);
       });
     }
-  }
-
-  disconnectedCallback(): void {
-    this.enrollObserving('checklist');
-    ipcRenderer?.removeAllListeners('checklist:read:all');
   }
 
   clickAccordionHeaderHandler(event: Event): void {
@@ -44,7 +51,7 @@ class SubnavCheck extends ShellHTML {
     if (this.state.selectedItem !== accordionItemId) {
       this.setState({ selectedItem: accordionItemId, toModifyItem: false });
     } else if (this.state.selectedItem.length && !this.state.toModifyItem) {
-      this.setState({ selectedItem: '', toModifyItem: false });
+      this.setState({ selectedItem: undefined, toModifyItem: false });
     }
   }
 
@@ -112,14 +119,75 @@ class SubnavCheck extends ShellHTML {
     });
   }
 
+  createNewCheckPost(): CheckPostType {
+    return {
+      id: short.generate(),
+      title: '새 게시글',
+      status: CheckPostStatusType.todo,
+      endDate: '',
+      startDate: '',
+      content: `
+        <h1 contenteditable="true">제목</h1>
+        <div contenteditable="true">내용</div>
+      `,
+    };
+  }
+
+  createCheckPostHandler(event: Event): void {
+    event.preventDefault();
+    // 게시글 id를 전역으로 관리할까말까..? > 하자!
+    if (!this.state.selectedItem) {
+      alert('게시글이 들어갈 리스트를 선택해주십시오');
+      return;
+    }
+
+    const newCheckPost = this.createNewCheckPost();
+    const checkposts = useGlobalState('checkposts');
+    const checkpostControl = useGlobalState('checkpostControl');
+    const list = useGlobalState('checklist');
+    list.forEach((item: CheckListType) => {
+      if (item.id === this.state.selectedItem) {
+        item.posts.push({
+          id: newCheckPost.id,
+          title: newCheckPost.title,
+          dday: getDday(newCheckPost.endDate),
+        });
+      }
+    });
+    ipcRenderer.send('checkpost:add', {
+      ...newCheckPost,
+      listId: this.state.selectedItem,
+    });
+    setGlobalState('checkposts', [...checkposts, newCheckPost]);
+    setGlobalState('checkpostControl', {
+      ...checkpostControl,
+      currentCheckPostId: newCheckPost.id,
+    });
+    setGlobalState('checklist', list);
+  }
+
+  clickCheckPostHandler(event: Event): void {
+    event.preventDefault();
+    if (!(event.target instanceof HTMLElement)) return;
+
+    const checkPostId = event.target.closest('.accordion__item')?.id;
+    const checkpostControl = useGlobalState('checkpostControl');
+    if (checkPostId === checkpostControl.currentCheckPostId) return;
+    setGlobalState('checkpostControl', {
+      ...checkpostControl,
+      currentCheckPostId: checkPostId,
+    });
+  }
+
   render(): RenderType {
     const list = useGlobalState('checklist');
+    const { currentCheckPostId } = useGlobalState('checkpostControl');
     const listHTML = list.reduce(
-      (acc: string, { id, name }: { id: string; name: string }) =>
+      (acc: string, { id, name, posts }: CheckListType) =>
         (acc += `
       <li class="accordion">
         <header class="accordion__header ${
-          this.state.selectedItem === id ? 'choosed' : ''
+          this.state.selectedItem === id ? 'choosed__list' : ''
         }" id="${id}" data-testid="${id}">
           ${
             this.state.toModifyItem && this.state.selectedItem === id
@@ -145,6 +213,24 @@ class SubnavCheck extends ShellHTML {
           }
           </div>
         </header>
+        ${
+          this.state.selectedItem === id && posts.length
+            ? `<ul class="accordion__list">
+            ${posts.reduce(
+              (acc, item) =>
+                (acc += `
+              <div class="accordion__item ${
+                currentCheckPostId === item.id ? 'choosed__item' : ''
+              }" id="${item.id}">
+                <span>${item.title}</span>
+                <span>${item.dday}</span>
+              </div>
+              `),
+              ''
+            )}
+          </ul>`
+            : ''
+        }
       </li>
       `),
       ''
@@ -153,6 +239,11 @@ class SubnavCheck extends ShellHTML {
     return {
       css: styleSheet,
       eventFuncs: [
+        {
+          className: 'accordion__button__delete',
+          func: this.deleteItemHandler,
+          type: EventType.click,
+        },
         {
           className: 'accordion__header',
           func: this.clickAccordionHeaderHandler,
@@ -164,11 +255,6 @@ class SubnavCheck extends ShellHTML {
           type: EventType.click,
         },
         {
-          className: 'accordion__button__delete',
-          func: this.deleteItemHandler,
-          type: EventType.click,
-        },
-        {
           className: 'accordion__form',
           func: this.submitToChangeNameHandler,
           type: EventType.submit,
@@ -176,6 +262,16 @@ class SubnavCheck extends ShellHTML {
         {
           className: 'accordion__plus',
           func: this.clickAddButtonHandler,
+          type: EventType.click,
+        },
+        {
+          className: 'nav__top__button',
+          func: this.createCheckPostHandler,
+          type: EventType.click,
+        },
+        {
+          className: 'accordion__item',
+          func: this.clickCheckPostHandler,
           type: EventType.click,
         },
       ],

@@ -136,9 +136,21 @@
       opacity: 0.8;
     }
   }
+
+  &__item {
+    &:last-child {
+      margin-bottom: 1.5rem;
+    }
+  }
 }
 
 .choosed {
-  color: white;
-  background-color: $deep-pink-color;
+  &__list {
+    color: white;
+    background-color: $deep-pink-color;
+  }
+
+  &__item {
+    background-color: $pink-color;
+  }
 }
