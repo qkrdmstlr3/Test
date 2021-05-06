@@ -1,9 +1,14 @@
-import { ShellHTML, createComponent, RenderType } from '@Lib/shell-html';
+import {
+  ShellHTML,
+  createComponent,
+  RenderType,
+  useGlobalState,
+  setGlobalState,
+} from '@Lib/shell-html';
 import styleSheet from './style.scss';
-import { useGlobalState, setGlobalState } from '../../lib/shell-html/state';
-import { CheckPostType } from '../../types/types';
-import { CheckPostStatusType } from '../../types/enum';
-import { getDday } from '../../utils/calcDate';
+import { CheckPostType } from '@Types/types';
+import { CheckPostStatusType } from '@Types/enum';
+import { getDday } from '@Utils/calcDate';
 import { ipcRenderer } from 'electron';
 
 class CheckPost extends ShellHTML {

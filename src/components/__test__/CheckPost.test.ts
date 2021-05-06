@@ -1,12 +1,12 @@
 /* dependencies */
-import { getByText, getByTestId } from '@testing-library/dom';
+import { getByTestId } from '@testing-library/dom';
 import '@testing-library/jest-dom/extend-expect';
 import _ from 'lodash';
 
 /* component, state */
 import CheckPost from '../CheckPost';
 import '@Lib/state';
-import { setGlobalState } from '../../lib/shell-html/state';
+import { setGlobalState } from '@Lib/shell-html';
 
 let checkPost: CheckPost;
 let checkPostComponent: HTMLElement;
@@ -30,7 +30,7 @@ describe('CheckPost Component test', () => {
     if (checkPost.shadowRoot?.childNodes[0]) {
       checkPostComponent = (checkPost.shadowRoot as unknown) as HTMLElement;
     }
-    setGlobalState('checkposts', [dummyPost]);
+    setGlobalState('checkposts', [_.cloneDeep(dummyPost)]);
     setGlobalState('checkpostControl', {
       currentCheckListId: undefined,
       currentCheckPostId: dummyPost.id,

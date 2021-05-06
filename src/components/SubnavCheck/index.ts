@@ -15,7 +15,7 @@ import {
   CheckPostSummaryType,
 } from '@Types/types';
 import { CheckPostStatusType } from '@Types/enum';
-import { getDday } from '../../utils/calcDate';
+import { getDday } from '@Utils/calcDate';
 
 class SubnavCheck extends ShellHTML {
   constructor() {
