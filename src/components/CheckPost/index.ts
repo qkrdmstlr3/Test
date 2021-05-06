@@ -1,4 +1,4 @@
-import { ShellHTML, createComponent } from '@Lib/shell-html';
+import { ShellHTML, createComponent, RenderType } from '@Lib/shell-html';
 import styleSheet from './style.scss';
 import { useGlobalState, setGlobalState } from '../../lib/shell-html/state';
 import { CheckPostType } from '../../types/types';
@@ -11,11 +11,11 @@ class CheckPost extends ShellHTML {
     super(undefined);
   }
 
-  connectedCallback() {
+  connectedCallback(): void {
     this.enrollObserving('checkpostControl');
   }
 
-  disconnectedCallback() {
+  disconnectedCallback(): void {
     this.releaseObserving('checkpostControl');
     ipcRenderer?.removeAllListeners('checkpost:getPost');
   }
@@ -23,11 +23,11 @@ class CheckPost extends ShellHTML {
   getPostStatus(status: CheckPostStatusType): string {
     switch (status) {
       case CheckPostStatusType.todo:
-        return `<div class="post__status status__todo">x</div>`;
+        return `<div class="post__status status__todo" data-testid="status">x</div>`;
       case CheckPostStatusType.doing:
-        return `<div class="post__status status__doing">⎯</div>`;
+        return `<div class="post__status status__doing" data-testid="status">⎯</div>`;
       case CheckPostStatusType.done:
-        return `<div class="post__status done">v</div>`;
+        return `<div class="post__status done" data-testid="status">v</div>`;
       default:
         return '';
     }
@@ -51,7 +51,7 @@ class CheckPost extends ShellHTML {
     });
   }
 
-  render() {
+  render(): RenderType {
     this.getPost();
     const post = this.state;
 
@@ -64,19 +64,27 @@ class CheckPost extends ShellHTML {
           <div class="post__header__left">
             <div class="post__header__top">
               ${this.getPostStatus(post.status)}
-              <h1 class="post__header__title" contenteditable="true">제목</h1>
-              <span class="post__header__dday">${getDday(post.endDate)}</span>
+              <h1 class="post__header__title" contenteditable="true" data-testid="title">${
+                post.title
+              }</h1>
+              <span class="post__header__dday" data-testid="dday">${getDday(
+                post.endDate
+              )}</span>
             </div>
             <div class="post__header__bottom">
-              <input type="date" value="${post.startDate}" />
-              <input type="date" value="${post.endDate}" />
+              <input type="date" data-testid="startdate" value="${
+                post.startDate
+              }" />
+              <input type="date" data-testid="enddate" value="${
+                post.endDate
+              }" />
             </div>
           </div>
           <div class="post__header__right">
             <button>삭제</button>
           </div>
         </header>
-        <div class="post__content">
+        <div class="post__content" data-testid="content">
           ${post.content}
         </div>
       </div>`
@@ -86,3 +94,5 @@ class CheckPost extends ShellHTML {
 }
 
 createComponent('post-check', CheckPost);
+
+export default CheckPost;
