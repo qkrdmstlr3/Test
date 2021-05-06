@@ -1,7 +1,7 @@
 import { ipcMain, BrowserWindow } from 'electron';
 import { db } from '../db';
 import { getDday } from '../../utils/calcDate';
-import { PostType } from '../../types/types';
+import { CheckPostSummaryType } from '../../types/types';
 
 export default function checkListIpcMain(mainWindow: BrowserWindow): void {
   ipcMain.on('checklist:read:all', async () => {
@@ -20,7 +20,7 @@ export default function checkListIpcMain(mainWindow: BrowserWindow): void {
       const newItem = {
         id: id as string,
         name: name as string,
-        posts: [] as Array<PostType>,
+        posts: [] as Array<CheckPostSummaryType>,
       };
       posts.map((post) => {
         const { id: postId, title, endDate, listId } = post;

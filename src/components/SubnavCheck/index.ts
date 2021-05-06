@@ -1,3 +1,5 @@
+import { ipcRenderer } from 'electron';
+import short from 'short-uuid';
 import {
   ShellHTML,
   createComponent,
@@ -6,11 +8,13 @@ import {
   useGlobalState,
   setGlobalState,
 } from '@Lib/shell-html';
-import { CheckListType, CheckPostType } from '@Types/types';
 import styleSheet from './style.scss';
-import { ipcRenderer } from 'electron';
-import short from 'short-uuid';
-import { CheckPostStatusType } from '../../types/enum';
+import {
+  CheckListItemType,
+  CheckPostType,
+  CheckPostSummaryType,
+} from '@Types/types';
+import { CheckPostStatusType } from '@Types/enum';
 import { getDday } from '../../utils/calcDate';
 
 class SubnavCheck extends ShellHTML {
@@ -44,6 +48,9 @@ class SubnavCheck extends ShellHTML {
     }
   }
 
+  /**
+   * EventHandler
+   */
   clickAccordionHeaderHandler(event: Event): void {
     if (!(event.target instanceof HTMLElement)) return;
 
@@ -83,10 +90,10 @@ class SubnavCheck extends ShellHTML {
 
     // queryselector사용을 바꾸면 좋을 것 같은데...
     const newName = event.target.querySelector('input')?.value;
-    if (!newName || !newName.length) return; //TODO: alert
+    if (!newName || !newName.length) return;
 
     const list = useGlobalState('checklist');
-    list.forEach((item: CheckListType) => {
+    list.forEach((item: CheckListItemType) => {
       if (item.id === this.state.selectedItem) {
         item.name = newName;
       }
@@ -112,7 +119,9 @@ class SubnavCheck extends ShellHTML {
     const list = useGlobalState('checklist');
     setGlobalState(
       'checklist',
-      list.filter((item: CheckListType) => item.id !== this.state.selectedItem)
+      list.filter(
+        (item: CheckListItemType) => item.id !== this.state.selectedItem
+      )
     );
     ipcRenderer?.send('checklist:delete', {
       id: this.state.selectedItem,
@@ -135,7 +144,6 @@ class SubnavCheck extends ShellHTML {
 
   createCheckPostHandler(event: Event): void {
     event.preventDefault();
-    // 게시글 id를 전역으로 관리할까말까..? > 하자!
     if (!this.state.selectedItem) {
       alert('게시글이 들어갈 리스트를 선택해주십시오');
       return;
@@ -145,7 +153,7 @@ class SubnavCheck extends ShellHTML {
     const checkposts = useGlobalState('checkposts');
     const checkpostControl = useGlobalState('checkpostControl');
     const list = useGlobalState('checklist');
-    list.forEach((item: CheckListType) => {
+    list.forEach((item: CheckListItemType) => {
       if (item.id === this.state.selectedItem) {
         item.posts.push({
           id: newCheckPost.id,
@@ -179,64 +187,88 @@ class SubnavCheck extends ShellHTML {
     });
   }
 
+  /**
+   *  HTML
+   */
+  getListItemName(id: string, name: string): string {
+    const isCurrentItemModifying =
+      this.state.toModifyItem && this.state.selectedItem === id;
+    if (isCurrentItemModifying) {
+      return `
+      <form class="accordion__form" data-testid="test_form">
+        <input 
+          placeholder="목록 이름" 
+          value="${name}" 
+          class="accordion__input" 
+          name="listname" 
+          maxlength="13"
+          data-testid="test_input"
+        />
+      </form>`;
+    }
+    return `<h3 class="accordion__name">${name}</h3>`;
+  }
+
+  getListItemHTML({ id, name, posts }: CheckListItemType): string {
+    const { selectedItem, toModifyItem } = this.state;
+    const ifItemChoosed = selectedItem === id ? 'choosed__list' : '';
+    const isStateModify = toModifyItem && selectedItem === id;
+    const isSelectedItemAndPostsExist = selectedItem === id && posts.length;
+
+    return `<li class="accordion">
+    <header class="accordion__header ${ifItemChoosed}" id="${id}" data-testid="${id}">
+      ${this.getListItemName(id, name)}
+      <div class="accordion__header__buttons">
+      ${
+        isStateModify
+          ? ''
+          : `<button class="accordion__button__modify" data-testid="modify_button">ℳ</button>
+        <button class="accordion__button__delete" data-testid="delete_button">✖️</button>`
+      }
+      </div>
+    </header>
+    ${isSelectedItemAndPostsExist ? this.getItemPostsHTML(posts) : ''}
+  </li>`;
+  }
+
+  getItemPostsHTML(posts: CheckPostSummaryType[]): string {
+    const postsHTML = posts.reduce(
+      (acc, item) => (acc += this.getItemPostHTML(item)),
+      ''
+    );
+    return `<ul class="accordion__list">${postsHTML}</ul>`;
+  }
+
+  getItemPostHTML(item: CheckPostSummaryType): string {
+    const { currentCheckPostId } = useGlobalState('checkpostControl');
+    const ifPostChoosed = currentCheckPostId === item.id ? 'choosed__item' : '';
+    return `<div class="accordion__item ${ifPostChoosed}" id="${item.id}">
+      <span>${item.title}</span>
+      <span>${item.dday}</span>
+    </div>`;
+  }
+
   render(): RenderType {
     const list = useGlobalState('checklist');
-    const { currentCheckPostId } = useGlobalState('checkpostControl');
     const listHTML = list.reduce(
-      (acc: string, { id, name, posts }: CheckListType) =>
-        (acc += `
-      <li class="accordion">
-        <header class="accordion__header ${
-          this.state.selectedItem === id ? 'choosed__list' : ''
-        }" id="${id}" data-testid="${id}">
-          ${
-            this.state.toModifyItem && this.state.selectedItem === id
-              ? `
-              <form class="accordion__form" data-testid="test_form">
-                <input 
-                  placeholder="목록 이름" 
-                  value="${name}" 
-                  class="accordion__input" 
-                  name="listname" 
-                  maxlength="13"
-                  data-testid="test_input"
-                />
-              </form>`
-              : `<h3 class="accordion__name">${name}</h3>`
-          }
-          <div class="accordion__header__buttons">
-          ${
-            this.state.toModifyItem && this.state.selectedItem === id
-              ? ''
-              : `<button class="accordion__button__modify" data-testid="modify_button">ℳ</button>
-            <button class="accordion__button__delete" data-testid="delete_button">✖️</button>`
-          }
-          </div>
-        </header>
-        ${
-          this.state.selectedItem === id && posts.length
-            ? `<ul class="accordion__list">
-            ${posts.reduce(
-              (acc, item) =>
-                (acc += `
-              <div class="accordion__item ${
-                currentCheckPostId === item.id ? 'choosed__item' : ''
-              }" id="${item.id}">
-                <span>${item.title}</span>
-                <span>${item.dday}</span>
-              </div>
-              `),
-              ''
-            )}
-          </ul>`
-            : ''
-        }
-      </li>
-      `),
+      (acc: string, listItem: CheckListItemType) =>
+        (acc += this.getListItemHTML(listItem)),
       ''
     );
 
     return {
+      html: `
+      <nav class="nav">
+        <div class="nav__top">
+          <h1 class="nav__top__title">할 일들</h1>
+          <button class="nav__top__button">+</button>
+        </div>
+        <ul class="nav__bottom">
+          ${listHTML}
+          <li class="accordion__plus" data-testid="add_button"> + </li>
+        </ul>
+      </nav>
+      `,
       css: styleSheet,
       eventFuncs: [
         {
@@ -275,18 +307,6 @@ class SubnavCheck extends ShellHTML {
           type: EventType.click,
         },
       ],
-      html: `
-      <nav class="nav">
-        <div class="nav__top">
-          <h1 class="nav__top__title">할 일들</h1>
-          <button class="nav__top__button">+</button>
-        </div>
-        <ul class="nav__bottom">
-          ${listHTML}
-          <li class="accordion__plus" data-testid="add_button"> + </li>
-        </ul>
-      </nav>
-      `,
     };
   }
 }

@@ -20,19 +20,6 @@ class CheckPost extends ShellHTML {
     ipcRenderer?.removeAllListeners('checkpost:getPost');
   }
 
-  getPostStatus(status: CheckPostStatusType): string {
-    switch (status) {
-      case CheckPostStatusType.todo:
-        return `<div class="post__status status__todo" data-testid="status">x</div>`;
-      case CheckPostStatusType.doing:
-        return `<div class="post__status status__doing" data-testid="status">⎯</div>`;
-      case CheckPostStatusType.done:
-        return `<div class="post__status done" data-testid="status">v</div>`;
-      default:
-        return '';
-    }
-  }
-
   getPost(): void {
     const postId = useGlobalState('checkpostControl').currentCheckPostId;
     if (!postId || postId === this.state?.id) return;
@@ -49,6 +36,28 @@ class CheckPost extends ShellHTML {
       setGlobalState('checkposts', [...posts, post]);
       this.setState(post);
     });
+  }
+
+  /**
+   * HTML
+   */
+  getPostStatus(status: CheckPostStatusType): string {
+    const statusList = {
+      [CheckPostStatusType.todo]: {
+        className: 'status__todo',
+        text: 'x',
+      },
+      [CheckPostStatusType.doing]: {
+        className: 'status__doing',
+        text: '⎯',
+      },
+      [CheckPostStatusType.done]: {
+        className: 'status__done',
+        text: 'v',
+      },
+    };
+    const { className, text } = statusList[status];
+    return `<div class="post__status ${className}" data-testid="status">${text}</div>`;
   }
 
   render(): RenderType {

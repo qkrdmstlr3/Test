@@ -1,15 +1,15 @@
 import { CheckPostStatusType } from './enum';
 
-export interface PostType {
+export interface CheckPostSummaryType {
   id: string;
   title: string;
   dday: string;
 }
 
-export interface CheckListType {
+export interface CheckListItemType {
   id: string;
   name: string;
-  posts: PostType[];
+  posts: CheckPostSummaryType[];
 }
 
 export interface CheckPostType {
