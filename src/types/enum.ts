@@ -1,5 +1,5 @@
 export enum CheckPostStatusType {
-  todo = 'todo',
-  doing = 'doing',
-  done = 'done',
+  todo = 'x',
+  doing = '-',
+  done = 'v',
 }

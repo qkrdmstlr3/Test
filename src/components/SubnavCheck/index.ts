@@ -129,16 +129,25 @@ class SubnavCheck extends ShellHTML {
   }
 
   createNewCheckPost(): CheckPostType {
+    const newContent = `
+    <div class="box">
+      <h1 contenteditable="true">제목</h1>
+      <button class="box__deleteButton">x</button>
+    </div>
+    <div class="box">
+      <div contenteditable="true">새 상자</div>
+      <button class="box__deleteButton">x</button>
+    </div>
+    `
+      .trim()
+      .replace(/>[ |\n]*</g, '><');
     return {
       id: short.generate(),
       title: '새 게시글',
       status: CheckPostStatusType.todo,
       endDate: '',
       startDate: '',
-      content: `
-        <h1 contenteditable="true">제목</h1>
-        <div contenteditable="true">내용</div>
-      `,
+      content: newContent,
     };
   }
 
@@ -181,6 +190,15 @@ class SubnavCheck extends ShellHTML {
     const checkPostId = event.target.closest('.accordion__item')?.id;
     const checkpostControl = useGlobalState('checkpostControl');
     if (checkPostId === checkpostControl.currentCheckPostId) return;
+
+    const posts = useGlobalState('checkposts');
+    const [post] = posts.filter(
+      (post: CheckPostType) => post.id === checkpostControl.currentCheckPostId
+    );
+    if (post) {
+      // 다른 게시글 클릭 시 현재 게시글에 대한 내용을 서버에 반영
+      ipcRenderer.send('checkpost:update', post);
+    }
     setGlobalState('checkpostControl', {
       ...checkpostControl,
       currentCheckPostId: checkPostId,
