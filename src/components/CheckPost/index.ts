@@ -148,7 +148,7 @@ class CheckPost extends ShellHTML {
     }
   }
 
-  deletePostHandler(): void {
+  deleteButtonHandler(): void {
     const deleteMessage = '정말 삭제하시겠습니까?';
     const isDelete = confirm(deleteMessage);
     if (!isDelete) return;
@@ -174,6 +174,36 @@ class CheckPost extends ShellHTML {
     });
     ipcRenderer.send('checkpost:delete', { id: this.state });
     this.setState(undefined);
+  }
+
+  changeStateHandler(event: Event): void {
+    if (!(event.target instanceof HTMLElement)) return;
+
+    const nextStatus = {
+      [CheckPostStatusType.todo]: {
+        status: CheckPostStatusType.doing,
+        oldClass: 'status__todo',
+        newClass: 'status__doing',
+      },
+      [CheckPostStatusType.doing]: {
+        status: CheckPostStatusType.done,
+        oldClass: 'status__doing',
+        newClass: 'status__done',
+      },
+      [CheckPostStatusType.done]: {
+        status: CheckPostStatusType.todo,
+        oldClass: 'status__done',
+        newClass: 'status__todo',
+      },
+    };
+    const statusComponent = this.getElement('status');
+    if (!statusComponent) return;
+
+    const { status, oldClass, newClass } = nextStatus[
+      event.target.innerText as CheckPostStatusType
+    ];
+    statusComponent.innerText = status;
+    statusComponent.classList.replace(oldClass, newClass);
   }
 
   /**
@@ -225,13 +255,18 @@ class CheckPost extends ShellHTML {
           type: EventType.change,
         },
         {
+          className: 'post__status',
+          func: this.changeStateHandler,
+          type: EventType.click,
+        },
+        {
           className: 'post__header__saveButton',
           func: this.saveButtonHandler,
           type: EventType.click,
         },
         {
           className: 'post__header__deleteButton',
-          func: this.deletePostHandler,
+          func: this.deleteButtonHandler,
           type: EventType.click,
         },
       ],
