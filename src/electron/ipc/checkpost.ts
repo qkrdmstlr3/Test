@@ -41,4 +41,8 @@ export default function checkListIpcMain(mainWindow: BrowserWindow): void {
       );
     }
   });
+
+  ipcMain.on('checkpost:delete', async (event, data) => {
+    await db.checkpost?.remove({ id: data.id }, {});
+  });
 }

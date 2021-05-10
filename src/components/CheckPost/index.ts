@@ -7,7 +7,7 @@ import {
   EventType,
 } from '@Lib/shell-html';
 import styleSheet from './style.scss';
-import { CheckPostType } from '@Types/types';
+import { CheckListItemType, CheckPostType } from '@Types/types';
 import { CheckPostStatusType } from '@Types/enum';
 import { getDday } from '@Utils/calcDate';
 import { ipcRenderer } from 'electron';
@@ -148,6 +148,34 @@ class CheckPost extends ShellHTML {
     }
   }
 
+  deletePostHandler(): void {
+    const deleteMessage = '정말 삭제하시겠습니까?';
+    const isDelete = confirm(deleteMessage);
+    if (!isDelete) return;
+
+    const checkpostControl = useGlobalState('checkpostControl');
+    const posts: CheckPostType[] = _.cloneDeep(useGlobalState('checkposts'));
+    const checklist: CheckListItemType[] = _.cloneDeep(
+      useGlobalState('checklist')
+    );
+    posts.filter((post) => post.id !== this.state);
+
+    checklist.forEach((item) => {
+      const index = item.posts.findIndex((post) => post.id === this.state);
+      if (index >= 0) {
+        item.posts.splice(index, 1);
+      }
+    });
+    setGlobalState('checklist', checklist);
+    setGlobalState('checkposts', posts);
+    setGlobalState('checkpostControl', {
+      ...checkpostControl,
+      currentCheckPostId: undefined,
+    });
+    ipcRenderer.send('checkpost:delete', { id: this.state });
+    this.setState(undefined);
+  }
+
   /**
    * HTML
    */
@@ -201,6 +229,11 @@ class CheckPost extends ShellHTML {
           func: this.saveButtonHandler,
           type: EventType.click,
         },
+        {
+          className: 'post__header__deleteButton',
+          func: this.deletePostHandler,
+          type: EventType.click,
+        },
       ],
       html: post
         ? `
@@ -228,7 +261,7 @@ class CheckPost extends ShellHTML {
             </div>
             <div class="post__header__right">
               <button class="post__header__saveButton">저장</button>
-              <button>삭제</button>
+              <button class="post__header__deleteButton">삭제</button>
             </div>
           </header>
           <div id="content" class="post__content" data-testid="content">
