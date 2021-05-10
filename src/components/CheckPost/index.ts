@@ -28,6 +28,16 @@ class CheckPost extends ShellHTML {
   }
 
   disconnectedCallback(): void {
+    // SubnavCheck랑 로직 겹침 공통으로 뺼 것
+    const checkpostControl = useGlobalState('checkpostControl');
+    const posts = useGlobalState('checkposts');
+    const [post] = posts.filter(
+      (post: CheckPostType) => post.id === checkpostControl.currentCheckPostId
+    );
+    if (post) {
+      ipcRenderer.send('checkpost:update', post);
+    }
+
     if (this.checkSave) {
       clearInterval(this.checkSave);
     }
@@ -67,25 +77,14 @@ class CheckPost extends ShellHTML {
     const posts: CheckPostType[] = _.cloneDeep(useGlobalState('checkposts'));
     const index = posts.findIndex((p) => p.id === postId);
     if (index < 0) return;
-    const storedPost = posts[index];
 
-    const isChangeExist =
-      storedPost.title !== title?.innerText ||
-      storedPost.status !== status?.innerText ||
-      storedPost.content.trim().replace(/>[ |\n]*</g, '><') !==
-        content?.innerHTML.trim().replace(/>[ |\n]*</g, '><') ||
-      storedPost.startDate !== startDate.value ||
-      storedPost.endDate !== endDate.value;
-
-    if (isChangeExist) {
-      posts[index].title = title?.innerText || '';
-      posts[index].content = content?.innerHTML || '';
-      posts[index].startDate = startDate.value;
-      posts[index].endDate = endDate.value;
-      posts[index].status =
-        (status?.innerText as CheckPostStatusType) || CheckPostStatusType.todo;
-      setGlobalState('checkposts', posts);
-    }
+    posts[index].title = title?.innerText || '';
+    posts[index].content = content?.innerHTML || '';
+    posts[index].startDate = startDate.value;
+    posts[index].endDate = endDate.value;
+    posts[index].status =
+      (status?.innerText as CheckPostStatusType) || CheckPostStatusType.todo;
+    setGlobalState('checkposts', posts);
   }
 
   addTextBoxHandler(): void {
@@ -94,9 +93,58 @@ class CheckPost extends ShellHTML {
     <div class="box">
       <div contenteditable="true">새 상자</div>
       <button class="box__deleteButton">x</button>
-    </div>`;
+    </div>`
+      .trim()
+      .replace(/>[ |\n]*</g, '><');
     if (content) {
       content.innerHTML += textBox;
+    }
+  }
+
+  addCheckBoxHandler(): void {
+    const content = this.getElement('content');
+    const checkBox = `
+    <div class="box">
+      <div class="checkbox">
+        <input type="checkbox">
+        <div contenteditable="true">체크 상자</div>
+      </div>
+      <button class="box__deleteButton">x</button>
+    </div>`
+      .trim()
+      .replace(/>[ |\n]*</g, '><');
+    if (content) {
+      content.innerHTML += checkBox;
+    }
+  }
+
+  removeTagHandler(event: Event): void {
+    if (!(event.target instanceof HTMLElement)) return;
+
+    const parentTag = event.target.closest('.box');
+    if (parentTag) {
+      const content = this.getElement('content');
+      content?.removeChild(parentTag);
+    }
+  }
+
+  endDateChangeHandler(event: Event): void {
+    if (!(event.target instanceof HTMLInputElement)) return;
+
+    const dday = this.getElement('dday');
+    if (!dday) return;
+    dday.innerText = getDday(event.target?.value);
+  }
+
+  saveButtonHandler(): void {
+    this.savePost();
+    const checkpostControl = useGlobalState('checkpostControl');
+    const posts = useGlobalState('checkposts');
+    const [post] = posts.filter(
+      (post: CheckPostType) => post.id === checkpostControl.currentCheckPostId
+    );
+    if (post) {
+      ipcRenderer.send('checkpost:update', post);
     }
   }
 
@@ -133,6 +181,26 @@ class CheckPost extends ShellHTML {
           func: this.addTextBoxHandler,
           type: EventType.click,
         },
+        {
+          className: 'postnav__addCheckBox',
+          func: this.addCheckBoxHandler,
+          type: EventType.click,
+        },
+        {
+          className: 'box__deleteButton',
+          func: this.removeTagHandler,
+          type: EventType.click,
+        },
+        {
+          className: 'post__header__endDate',
+          func: this.endDateChangeHandler,
+          type: EventType.change,
+        },
+        {
+          className: 'post__header__saveButton',
+          func: this.saveButtonHandler,
+          type: EventType.click,
+        },
       ],
       html: post
         ? `
@@ -145,20 +213,21 @@ class CheckPost extends ShellHTML {
                 <h1 id="title" class="post__header__title" contenteditable="true" data-testid="title">${
                   post.title
                 }</h1>
-                <span class="post__header__dday" data-testid="dday">${getDday(
+                <span id="dday" class="post__header__dday" data-testid="dday">${getDday(
                   post.endDate
                 )}</span>
               </div>
               <div class="post__header__bottom">
-                <input id="startdate" type="date" data-testid="startdate" value="${
+                <input id="startdate" name="startDate" type="date" data-testid="startdate" value="${
                   post.startDate
                 }" />
-                <input id="enddate" type="date" data-testid="enddate" value="${
+                <input id="enddate" name="endDate" class="post__header__endDate" type="date" data-testid="enddate" value="${
                   post.endDate
                 }" />
               </div>
             </div>
             <div class="post__header__right">
+              <button class="post__header__saveButton">저장</button>
               <button>삭제</button>
             </div>
           </header>
