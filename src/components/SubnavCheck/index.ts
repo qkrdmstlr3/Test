@@ -160,7 +160,6 @@ class SubnavCheck extends ShellHTML {
 
     const newCheckPost = this.createNewCheckPost();
     const checkposts = useGlobalState('checkposts');
-    const checkpostControl = useGlobalState('checkpostControl');
     const list = useGlobalState('checklist');
     list.forEach((item: CheckListItemType) => {
       if (item.id === this.state.selectedItem) {
@@ -191,14 +190,6 @@ class SubnavCheck extends ShellHTML {
     const checkpostControl = useGlobalState('checkpostControl');
     if (checkPostId === checkpostControl.currentCheckPostId) return;
 
-    const posts = useGlobalState('checkposts');
-    const [post] = posts.filter(
-      (post: CheckPostType) => post.id === checkpostControl.currentCheckPostId
-    );
-    if (post) {
-      // 다른 게시글 클릭 시 현재 게시글에 대한 내용을 서버에 반영
-      ipcRenderer.send('checkpost:update', post);
-    }
     setGlobalState('checkpostControl', {
       currentCheckListId: this.state.selectedItem,
       currentCheckPostId: checkPostId,

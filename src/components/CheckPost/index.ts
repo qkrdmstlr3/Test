@@ -88,6 +88,7 @@ class CheckPost extends ShellHTML {
     posts[index].status =
       (status?.innerText as CheckPostStatusType) || CheckPostStatusType.todo;
     setGlobalState('checkposts', posts);
+    ipcRenderer.send('checkpost:update', posts[index]);
   }
 
   changeTitle(newTitle: string): void {
