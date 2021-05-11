@@ -177,7 +177,7 @@ class SubnavCheck extends ShellHTML {
     });
     setGlobalState('checkposts', [...checkposts, newCheckPost]);
     setGlobalState('checkpostControl', {
-      ...checkpostControl,
+      checkpostControl: this.state.selectedItem,
       currentCheckPostId: newCheckPost.id,
     });
     setGlobalState('checklist', list);
@@ -200,7 +200,7 @@ class SubnavCheck extends ShellHTML {
       ipcRenderer.send('checkpost:update', post);
     }
     setGlobalState('checkpostControl', {
-      ...checkpostControl,
+      currentCheckListId: this.state.selectedItem,
       currentCheckPostId: checkPostId,
     });
   }

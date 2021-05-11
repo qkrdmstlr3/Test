@@ -35,7 +35,7 @@ class CheckPost extends ShellHTML {
       (post: CheckPostType) => post.id === checkpostControl.currentCheckPostId
     );
     if (post) {
-      ipcRenderer.send('checkpost:update', post);
+      ipcRenderer?.send('checkpost:update', post);
     }
 
     if (this.checkSave) {
@@ -78,6 +78,9 @@ class CheckPost extends ShellHTML {
     const index = posts.findIndex((p) => p.id === postId);
     if (index < 0) return;
 
+    if (posts[index].title !== title?.innerText) {
+      this.changeTitle(title?.innerText || '');
+    }
     posts[index].title = title?.innerText || '';
     posts[index].content = content?.innerHTML || '';
     posts[index].startDate = startDate.value;
@@ -85,6 +88,24 @@ class CheckPost extends ShellHTML {
     posts[index].status =
       (status?.innerText as CheckPostStatusType) || CheckPostStatusType.todo;
     setGlobalState('checkposts', posts);
+  }
+
+  changeTitle(newTitle: string): void {
+    const checkpostControl = useGlobalState('checkpostControl');
+    const checklist: CheckListItemType[] = _.cloneDeep(
+      useGlobalState('checklist')
+    );
+
+    checklist.forEach((item) => {
+      if (item.id === checkpostControl.currentCheckListId) {
+        item.posts.forEach((post) => {
+          if (post.id === this.state) {
+            post.title = newTitle;
+          }
+        });
+      }
+    });
+    setGlobalState('checklist', checklist);
   }
 
   addTextBoxHandler(): void {
@@ -144,7 +165,7 @@ class CheckPost extends ShellHTML {
       (post: CheckPostType) => post.id === checkpostControl.currentCheckPostId
     );
     if (post) {
-      ipcRenderer.send('checkpost:update', post);
+      ipcRenderer?.send('checkpost:update', post);
     }
   }
 
@@ -161,9 +182,8 @@ class CheckPost extends ShellHTML {
     posts.filter((post) => post.id !== this.state);
 
     checklist.forEach((item) => {
-      const index = item.posts.findIndex((post) => post.id === this.state);
-      if (index >= 0) {
-        item.posts.splice(index, 1);
+      if (item.id === checkpostControl.currentCheckListId) {
+        item.posts = item.posts.filter((post) => post.id !== this.state);
       }
     });
     setGlobalState('checklist', checklist);
@@ -172,7 +192,7 @@ class CheckPost extends ShellHTML {
       ...checkpostControl,
       currentCheckPostId: undefined,
     });
-    ipcRenderer.send('checkpost:delete', { id: this.state });
+    ipcRenderer?.send('checkpost:delete', { id: this.state });
     this.setState(undefined);
   }
 
