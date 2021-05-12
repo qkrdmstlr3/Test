@@ -28,6 +28,7 @@ class CheckPost extends ShellHTML {
   }
 
   disconnectedCallback(): void {
+    super.disconnectedCallback();
     // SubnavCheck랑 로직 겹침 공통으로 뺼 것
     const checkpostControl = useGlobalState('checkpostControl');
     const posts = useGlobalState('checkposts');
