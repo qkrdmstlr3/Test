@@ -21,7 +21,8 @@
           "@Lib": "./src/lib",
           "@Pages": "./src/pages",
           "@Style": "./src/common/style",
-          "@Types": "./src/types"
+          "@Types": "./src/types",
+          "@Utils": "./src/utils"
         }
       }
     ]

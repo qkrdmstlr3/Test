@@ -14,6 +14,5 @@ import '@Pages/calendar';
 import '@Pages/check';
 import '@Pages/home';
 import '@Pages/note';
-import '@Pages/trash';
 
 render('layout-main', document.getElementById('root'));

@@ -4,6 +4,7 @@ import { observe, disObserve } from './state';
 class ShellHTML extends HTMLElement {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   state: any;
+  events: EventFuncType[] | undefined;
 
   constructor(state: unknown = null) {
     super();
@@ -15,6 +16,10 @@ class ShellHTML extends HTMLElement {
     if (element && this.shadowRoot) {
       this.renderFirst(element, this.shadowRoot);
     }
+  }
+
+  disconnectedCallback(): void {
+    this.removeEvents();
   }
 
   /**
@@ -91,6 +96,7 @@ class ShellHTML extends HTMLElement {
     }
 
     // ShadowRoot Event Delegation
+    this.events = eventFuncs;
     eventFuncs.forEach((eventFunc) => this.eventDelegation(eventFunc, dom));
   }
 
@@ -100,20 +106,34 @@ class ShellHTML extends HTMLElement {
     dom.appendChild(style);
   }
 
+  getEventListner(event: Event, { className, func }: EventFuncType): void {
+    event.stopPropagation();
+    const isCorrectElement =
+      (event.target instanceof HTMLElement ||
+        event.target instanceof SVGElement) &&
+      event.target.closest(`.${className}`);
+
+    if (isCorrectElement) {
+      func.call(this, event);
+    }
+  }
+
   eventDelegation(
     { className, func, type }: EventFuncType,
     dom: ShadowRoot
   ): void {
-    dom.addEventListener(type, (event: Event) => {
-      event.stopPropagation();
-      const isCorrectElement =
-        (event.target instanceof HTMLElement ||
-          event.target instanceof SVGElement) &&
-        event.target.closest(`.${className}`);
+    dom.addEventListener(type, (event: Event) =>
+      this.getEventListner(event, { className, func, type })
+    );
+  }
 
-      if (isCorrectElement) {
-        func.call(this, event);
-      }
+  removeEvents(): void {
+    if (!this.events) return;
+
+    this.events.forEach(({ className, func, type }) => {
+      this.shadowRoot?.removeEventListener(type, (event: Event) =>
+        this.getEventListner(event, { className, func, type })
+      );
     });
   }
 
