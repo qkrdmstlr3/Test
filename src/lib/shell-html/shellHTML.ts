@@ -106,7 +106,7 @@ class ShellHTML extends HTMLElement {
     dom.appendChild(style);
   }
 
-  getEventListner(event: Event, { className, func }: EventFuncType): any {
+  getEventListner(event: Event, { className, func }: EventFuncType): void {
     event.stopPropagation();
     const isCorrectElement =
       (event.target instanceof HTMLElement ||

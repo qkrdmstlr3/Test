@@ -156,7 +156,7 @@ class CheckPost extends ShellHTML {
 
     const dday = this.getElement('dday');
     if (!dday) return;
-    dday.innerText = getDday(event.target?.value);
+    dday.innerHTML = getDday(event.target?.value);
   }
 
   saveButtonHandler(): void {
@@ -222,9 +222,9 @@ class CheckPost extends ShellHTML {
     if (!statusComponent) return;
 
     const { status, oldClass, newClass } = nextStatus[
-      event.target.innerText as CheckPostStatusType
+      event.target.innerHTML as CheckPostStatusType
     ];
-    statusComponent.innerText = status;
+    statusComponent.innerHTML = status;
     statusComponent.classList.replace(oldClass, newClass);
   }
 
@@ -318,7 +318,7 @@ class CheckPost extends ShellHTML {
             </div>
             <div class="post__header__right">
               <button class="post__header__saveButton">저장</button>
-              <button class="post__header__deleteButton">삭제</button>
+              <button class="post__header__deleteButton" data-testid="delete_button">삭제</button>
             </div>
           </header>
           <div id="content" class="post__content" data-testid="content">
@@ -326,8 +326,8 @@ class CheckPost extends ShellHTML {
           </div>
         </div>
         <nav class="postnav">
-          <button class="postnav__addTextBox">txt</button>
-          <button class="postnav__addCheckBox">ck</button>
+          <button class="postnav__addTextBox" data-testid="addTextBox">txt</button>
+          <button class="postnav__addCheckBox" data-testid="addCheckBox">ck</button>
         </nav>
       </div>`
         : '<div>none</div>',
