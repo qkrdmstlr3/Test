@@ -167,6 +167,7 @@ class SubnavCheck extends ShellHTML {
           id: newCheckPost.id,
           title: newCheckPost.title,
           dday: getDday(newCheckPost.endDate),
+          status: newCheckPost.status,
         });
       }
     });
@@ -252,7 +253,10 @@ class SubnavCheck extends ShellHTML {
     const { currentCheckPostId } = useGlobalState('checkpostControl');
     const ifPostChoosed = currentCheckPostId === item.id ? 'choosed__item' : '';
     return `<div class="accordion__item ${ifPostChoosed}" id="${item.id}">
-      <span>${item.title}</span>
+      <div>
+        <span class="accordion__status">${item.status}</span>
+        <span>${item.title}</span>
+      </div>
       <span>${item.dday}</span>
     </div>`;
   }

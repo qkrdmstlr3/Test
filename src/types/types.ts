@@ -4,6 +4,7 @@ export interface CheckPostSummaryType {
   id: string;
   title: string;
   dday: string;
+  status: string;
 }
 
 export interface CheckListItemType {

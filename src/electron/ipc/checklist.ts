@@ -11,7 +11,7 @@ export default function checkListIpcMain(mainWindow: BrowserWindow): void {
         .sort({ updatedAt: 1 })) || [];
     const posts =
       (await db.checkpost
-        ?.find({}, { id: 1, title: 1, endDate: 1, listId: 1 })
+        ?.find({}, { id: 1, title: 1, endDate: 1, listId: 1, status: 1 })
         .sort({ updatedAt: 1 })) || [];
 
     const newList = [...Array(lists?.length || 0)];
@@ -23,12 +23,13 @@ export default function checkListIpcMain(mainWindow: BrowserWindow): void {
         posts: [] as Array<CheckPostSummaryType>,
       };
       posts.map((post) => {
-        const { id: postId, title, endDate, listId } = post;
+        const { id: postId, title, endDate, listId, status } = post;
         if (listId === id) {
           const newPost = {
             id: postId as string,
             title: title as string,
             dday: getDday(endDate as string),
+            status: status as string,
           };
           newItem.posts.push(newPost);
         }
