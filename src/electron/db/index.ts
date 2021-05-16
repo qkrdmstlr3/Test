@@ -3,16 +3,16 @@ import Datastore from 'nedb-promises';
 
 interface TypeDB {
   checklist: null | Datastore;
-  checktext: null | Datastore;
-  postlist: null | Datastore;
-  posttext: null | Datastore;
+  checkpost: null | Datastore;
+  notelist: null | Datastore;
+  notepost: null | Datastore;
 }
 
 export const db: TypeDB = {
   checklist: null,
-  checktext: null,
-  postlist: null,
-  posttext: null,
+  checkpost: null,
+  notelist: null,
+  notepost: null,
 };
 
 export function executeDB(app: App, isDev: boolean): void {
@@ -27,7 +27,7 @@ export function executeDB(app: App, isDev: boolean): void {
   }
 
   db.checklist = makeDB('checklist.db');
-  db.checktext = makeDB('checktext.db');
-  db.postlist = makeDB('postlist.db');
-  db.posttext = makeDB('posttext.db');
+  db.checkpost = makeDB('checkpost.db');
+  db.notelist = makeDB('notelist.db');
+  db.notepost = makeDB('notepost.db');
 }

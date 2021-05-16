@@ -1,8 +1,20 @@
 @import '/src/common/style/mixin.scss';
 @import '/src/common/style/variables.scss';
 
+div,
+h1 {
+  outline: none;
+}
+
+.container {
+  display: flex;
+}
+
 .post {
+  width: 93%;
   padding: 1.5rem 1rem;
+  overflow: scroll;
+
   &__header {
     display: flex;
     justify-content: space-between;
@@ -35,6 +47,12 @@
 
     cursor: pointer;
   }
+
+  &__content {
+    div {
+      margin: 0.5rem 0;
+    }
+  }
 }
 
 .status {
@@ -48,5 +66,68 @@
 
   &__done {
     background-color: $green-color;
+  }
+}
+
+.postnav {
+  width: 7%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 7rem;
+
+  button {
+    width: 3rem;
+    height: 3rem;
+    background-color: white;
+    margin: 0.4rem 0;
+
+    border: 1px solid $pink-color;
+    border-radius: 1.5rem;
+    outline: none;
+    cursor: pointer;
+    font-weight: bold;
+
+    &:active {
+      background-color: $deep-pink-color;
+      color: white;
+    }
+  }
+}
+
+.box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  div,
+  h1 {
+    width: 100%;
+  }
+
+  &:hover {
+    .box__deleteButton {
+      @include center;
+    }
+  }
+
+  &__deleteButton {
+    display: none;
+    width: 1rem;
+    height: 1rem;
+
+    border-radius: 0.5rem;
+  }
+}
+
+.checkbox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin: 0 !important;
+  div {
+    margin: 0 !important;
   }
 }

@@ -28,13 +28,11 @@ describe('Nav Component test', () => {
     const calendar = getByTestId(navComponent, 'calendar');
     const check = getByTestId(navComponent, 'check');
     const note = getByTestId(navComponent, 'note');
-    const trash = getByTestId(navComponent, 'trash');
 
     expect(home.style.opacity).toBe(OPACITY_SELECTED);
     expect(calendar.style.opacity).toBe(OPACITY_NOTSELECTED);
     expect(check.style.opacity).toBe(OPACITY_NOTSELECTED);
     expect(note.style.opacity).toBe(OPACITY_NOTSELECTED);
-    expect(trash.style.opacity).toBe(OPACITY_NOTSELECTED);
   });
 
   it('calendar tab click시 opacity 확인', () => {
@@ -45,13 +43,11 @@ describe('Nav Component test', () => {
     const home = getByTestId(navComponent, 'home');
     const check = getByTestId(navComponent, 'check');
     const note = getByTestId(navComponent, 'note');
-    const trash = getByTestId(navComponent, 'trash');
 
     expect(home.style.opacity).toBe(OPACITY_NOTSELECTED);
     expect(calendar.style.opacity).toBe(OPACITY_SELECTED);
     expect(check.style.opacity).toBe(OPACITY_NOTSELECTED);
     expect(note.style.opacity).toBe(OPACITY_NOTSELECTED);
-    expect(trash.style.opacity).toBe(OPACITY_NOTSELECTED);
   });
 
   it('check tab click시 opacity 확인', () => {
@@ -62,13 +58,11 @@ describe('Nav Component test', () => {
     const home = getByTestId(navComponent, 'home');
     const check = getByTestId(navComponent, 'check');
     const note = getByTestId(navComponent, 'note');
-    const trash = getByTestId(navComponent, 'trash');
 
     expect(home.style.opacity).toBe(OPACITY_NOTSELECTED);
     expect(calendar.style.opacity).toBe(OPACITY_NOTSELECTED);
     expect(check.style.opacity).toBe(OPACITY_SELECTED);
     expect(note.style.opacity).toBe(OPACITY_NOTSELECTED);
-    expect(trash.style.opacity).toBe(OPACITY_NOTSELECTED);
   });
 
   it('note tab click시 opacity 확인', () => {
@@ -79,30 +73,11 @@ describe('Nav Component test', () => {
     const home = getByTestId(navComponent, 'home');
     const check = getByTestId(navComponent, 'check');
     const note = getByTestId(navComponent, 'note');
-    const trash = getByTestId(navComponent, 'trash');
 
     expect(home.style.opacity).toBe(OPACITY_NOTSELECTED);
     expect(calendar.style.opacity).toBe(OPACITY_NOTSELECTED);
     expect(check.style.opacity).toBe(OPACITY_NOTSELECTED);
     expect(note.style.opacity).toBe(OPACITY_SELECTED);
-    expect(trash.style.opacity).toBe(OPACITY_NOTSELECTED);
-  });
-
-  it('trash tab click시 opacity 확인', () => {
-    if (!navComponent) return;
-
-    fireEvent.click(getByTestId(navComponent, 'trash'), { button: 0 });
-    const calendar = getByTestId(navComponent, 'calendar');
-    const home = getByTestId(navComponent, 'home');
-    const check = getByTestId(navComponent, 'check');
-    const note = getByTestId(navComponent, 'note');
-    const trash = getByTestId(navComponent, 'trash');
-
-    expect(home.style.opacity).toBe(OPACITY_NOTSELECTED);
-    expect(calendar.style.opacity).toBe(OPACITY_NOTSELECTED);
-    expect(check.style.opacity).toBe(OPACITY_NOTSELECTED);
-    expect(note.style.opacity).toBe(OPACITY_NOTSELECTED);
-    expect(trash.style.opacity).toBe(OPACITY_SELECTED);
   });
 
   it('snapshot', () => {

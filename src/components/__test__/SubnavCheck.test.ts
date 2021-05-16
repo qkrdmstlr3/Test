@@ -53,9 +53,9 @@ describe('SubnavCheck Component test', () => {
     const thirdItem = getByTestId(subnavComponent, dummyChecklist[2].id);
 
     expect(subnav.state.selectedItem).toBe('list1');
-    expect(firstItem.classList.contains('choosed')).toBeTruthy();
-    expect(secondItem.classList.contains('choosed')).toBeFalsy();
-    expect(thirdItem.classList.contains('choosed')).toBeFalsy();
+    expect(firstItem.classList.contains('choosed__list')).toBeTruthy();
+    expect(secondItem.classList.contains('choosed__list')).toBeFalsy();
+    expect(thirdItem.classList.contains('choosed__list')).toBeFalsy();
   });
 
   it('create new item test', () => {
@@ -95,8 +95,10 @@ describe('SubnavCheck Component test', () => {
   it('delete item test', () => {
     if (!subnavComponent) return;
 
+    fireEvent.click(getByTestId(subnavComponent, dummyChecklist[0].id));
     const firstItem = getByTestId(subnavComponent, dummyChecklist[0].id);
     const deleteButton = getByTestId(firstItem, 'delete_button');
+
     fireEvent.click(deleteButton);
     expect(window.confirm).toBeCalled();
 
