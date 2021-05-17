@@ -8,7 +8,7 @@ import {
 } from '@Lib/shell-html';
 import styleSheet from './style.scss';
 import { CheckListItemType, CheckPostType } from '@Types/types';
-import { CheckPostStatusType } from '@Types/enum';
+import { CheckPostStatusType, CheckPostSummaryAttrName } from '@Types/enum';
 import { getDday } from '@Utils/calcDate';
 import { ipcRenderer } from 'electron';
 import _ from 'lodash';
@@ -76,23 +76,29 @@ class CheckPost extends ShellHTML {
     const postId = useGlobalState('checkpostControl').currentCheckPostId;
 
     const posts: CheckPostType[] = _.cloneDeep(useGlobalState('checkposts'));
-    const index = posts.findIndex((p) => p.id === postId);
-    if (index < 0) return;
+    const [post] = posts.filter((p) => p.id === postId);
+    if (!post) return;
 
-    if (posts[index].title !== title?.innerText) {
-      this.changeTitle(title?.innerText || '');
+    if (post.title !== title?.innerText) {
+      this.changeTitle(title?.innerText || '새 제목');
     }
-    posts[index].title = title?.innerText || '';
-    posts[index].content = content?.innerHTML || '';
-    posts[index].startDate = startDate.value;
-    posts[index].endDate = endDate.value;
-    posts[index].status =
+    if (post.endDate !== endDate.value) {
+      this.changeDday(endDate.value);
+    }
+    if (post.status !== status?.innerText) {
+      this.changeStatus(status?.innerText || '-');
+    }
+    post.title = title?.innerText || '';
+    post.content = content?.innerHTML || '';
+    post.startDate = startDate.value;
+    post.endDate = endDate.value;
+    post.status =
       (status?.innerText as CheckPostStatusType) || CheckPostStatusType.todo;
     setGlobalState('checkposts', posts);
-    ipcRenderer.send('checkpost:update', posts[index]);
+    ipcRenderer.send('checkpost:update', post);
   }
 
-  changeTitle(newTitle: string): void {
+  changeSubnav(attrName: CheckPostSummaryAttrName, newValue: string): void {
     const checkpostControl = useGlobalState('checkpostControl');
     const checklist: CheckListItemType[] = _.cloneDeep(
       useGlobalState('checklist')
@@ -102,12 +108,24 @@ class CheckPost extends ShellHTML {
       if (item.id === checkpostControl.currentCheckListId) {
         item.posts.forEach((post) => {
           if (post.id === this.state) {
-            post.title = newTitle;
+            post[attrName] = newValue;
           }
         });
       }
     });
     setGlobalState('checklist', checklist);
+  }
+
+  changeTitle(newTitle: string): void {
+    this.changeSubnav(CheckPostSummaryAttrName.title, newTitle);
+  }
+
+  changeDday(newEndDate: string): void {
+    this.changeSubnav(CheckPostSummaryAttrName.dday, getDday(newEndDate));
+  }
+
+  changeStatus(newStatus: string): void {
+    this.changeSubnav(CheckPostSummaryAttrName.status, newStatus);
   }
 
   addTextBoxHandler(): void {
