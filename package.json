@@ -1,6 +1,6 @@
 {
   "name": "slly",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "shellboy's planning application",
   "main": "dist/main.js",
   "scripts": {
