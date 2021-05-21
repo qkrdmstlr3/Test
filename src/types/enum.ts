@@ -3,3 +3,10 @@ export enum CheckPostStatusType {
   doing = '-',
   done = 'v',
 }
+
+export enum CheckPostSummaryAttrName {
+  id = 'id',
+  title = 'title',
+  dday = 'dday',
+  status = 'status',
+}
