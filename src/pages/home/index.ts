@@ -10,7 +10,7 @@ class Home extends ShellHTML {
         <subnav-home></subnav-home>
         </nav>
         <div class="content">
-          home
+          <home-main></home-main>
         </div>
       </div>`,
     };
