@@ -1,6 +1,8 @@
 @import '/src/common/style/mixin.scss';
 @import '/src/common/style/variables.scss';
 
+@include status;
+
 .nav {
   @include subnav;
   padding: 0 1rem;
@@ -141,12 +143,9 @@
     &:last-child {
       margin-bottom: 1.5rem;
     }
-  }
-
-  &__status {
-    margin-right: 0.2rem;
-    font-weight: bold;
-    color: $deep-pink-color;
+    &__left {
+      display: flex;
+    }
   }
 }
 
