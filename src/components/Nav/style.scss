@@ -5,7 +5,7 @@
   align-items: center;
   flex-direction: column;
   width: 5rem;
-  background-color: #ffdcdc;
+  background-color: $blue-color;
 
   &__item {
     width: 3rem;
@@ -23,5 +23,5 @@
 }
 
 svg {
-  fill: $deep-pink-color;
+  fill: $deep-blue-color;
 }

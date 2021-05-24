@@ -47,19 +47,19 @@ h1 {
       border-radius: 1.5rem;
       border: 2px solid white;
 
-      color: $deep-pink-color;
+      color: $deep-blue-color;
       background-color: white;
-      border-left-color: $pink-color;
-      border-top-color: $pink-color;
-      border-right-color: $deep-pink-color;
-      border-bottom-color: $deep-pink-color;
+      border-left-color: $blue-color;
+      border-top-color: $blue-color;
+      border-right-color: $deep-blue-color;
+      border-bottom-color: $deep-blue-color;
       cursor: pointer;
 
       &:active {
-        border-left-color: $deep-pink-color;
-        border-top-color: $deep-pink-color;
-        border-right-color: $pink-color;
-        border-bottom-color: $pink-color;
+        border-left-color: $deep-blue-color;
+        border-top-color: $deep-blue-color;
+        border-right-color: $blue-color;
+        border-bottom-color: $blue-color;
       }
     }
   }
@@ -112,14 +112,14 @@ h1 {
     background-color: white;
     margin: 0.4rem 0;
 
-    border: 1px solid $pink-color;
+    border: 1px solid $blue-color;
     border-radius: 1.5rem;
     outline: none;
     cursor: pointer;
     font-weight: bold;
 
     &:active {
-      background-color: $deep-pink-color;
+      background-color: $deep-blue-color;
       color: white;
     }
   }
@@ -153,7 +153,7 @@ h1 {
     background: none;
     font-size: 1.2rem;
     font-weight: bold;
-    color: $deep-pink-color;
+    color: $deep-blue-color;
     cursor: pointer;
   }
 }

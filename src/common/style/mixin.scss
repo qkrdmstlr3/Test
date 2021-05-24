@@ -5,7 +5,7 @@
   width: 1120px;
   height: 100%;
   border-top-left-radius: 10px;
-  background-color: $light-pink-color;
+  background-color: $light-blue-color;
   overflow: hidden;
 }
 
@@ -21,7 +21,7 @@
 
 @mixin content {
   width: calc(100% - 15rem);
-  background-color: $light-pink-color;
+  background-color: $light-blue-color;
 }
 
 @mixin center {
