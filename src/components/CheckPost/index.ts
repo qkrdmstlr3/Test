@@ -108,7 +108,7 @@ class CheckPost extends ShellHTML {
       if (item.id === checkpostControl.currentCheckListId) {
         item.posts.forEach((post) => {
           if (post.id === this.state) {
-            post[attrName] = newValue;
+            post[attrName] = newValue as CheckPostStatusType;
           }
         });
       }
