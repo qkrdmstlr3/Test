@@ -1,6 +1,8 @@
 @import '/src/common/style/mixin.scss';
 @import '/src/common/style/variables.scss';
 
+@include status;
+
 .nav {
   @include subnav;
   padding: 0 1rem;
@@ -26,19 +28,19 @@
       font-size: 2rem;
       border: 2px solid white;
 
-      color: $deep-pink-color;
+      color: $deep-blue-color;
       background-color: white;
-      border-left-color: $pink-color;
-      border-top-color: $pink-color;
-      border-right-color: $deep-pink-color;
-      border-bottom-color: $deep-pink-color;
+      border-left-color: $blue-color;
+      border-top-color: $blue-color;
+      border-right-color: $deep-blue-color;
+      border-bottom-color: $deep-blue-color;
       cursor: pointer;
 
       &:active {
-        border-left-color: $deep-pink-color;
-        border-top-color: $deep-pink-color;
-        border-right-color: $pink-color;
-        border-bottom-color: $pink-color;
+        border-left-color: $deep-blue-color;
+        border-top-color: $deep-blue-color;
+        border-right-color: $blue-color;
+        border-bottom-color: $blue-color;
       }
     }
   }
@@ -60,24 +62,24 @@
     margin: 0.2rem 0;
     padding: 0.5rem;
 
-    border: 1px solid $pink-color;
+    border: 1px solid $blue-color;
     border-radius: 5px;
     color: $black-color;
     cursor: pointer;
 
     &:hover {
-      background-color: $pink-color;
+      background-color: $blue-color;
     }
   }
 
   &__header {
     height: 1.5rem;
-    color: $deep-pink-color;
-    border: 1px solid $deep-pink-color;
+    color: $deep-blue-color;
+    border: 1px solid $deep-blue-color;
 
     &:hover {
       color: white;
-      background-color: $deep-pink-color;
+      background-color: $deep-blue-color;
       .accordion__header__buttons {
         display: block;
       }
@@ -100,12 +102,12 @@
     padding: 0;
 
     color: white;
-    background-color: $pink-color;
+    background-color: $blue-color;
     font-weight: bold;
     font-size: 2rem;
 
     &:hover {
-      background-color: $deep-pink-color;
+      background-color: $deep-blue-color;
     }
   }
 
@@ -128,7 +130,7 @@
     color: white;
     font-weight: bold;
     border-bottom: 1px solid white;
-    background-color: $deep-pink-color;
+    background-color: $deep-blue-color;
     outline: none;
 
     &::placeholder {
@@ -141,22 +143,19 @@
     &:last-child {
       margin-bottom: 1.5rem;
     }
-  }
-
-  &__status {
-    margin-right: 0.2rem;
-    font-weight: bold;
-    color: $deep-pink-color;
+    &__left {
+      display: flex;
+    }
   }
 }
 
 .choosed {
   &__list {
     color: white;
-    background-color: $deep-pink-color;
+    background-color: $deep-blue-color;
   }
 
   &__item {
-    background-color: $pink-color;
+    background-color: $blue-color;
   }
 }

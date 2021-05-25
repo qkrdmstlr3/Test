@@ -16,6 +16,7 @@ import {
 } from '@Types/types';
 import { CheckPostStatusType } from '@Types/enum';
 import { getDday } from '@Utils/calcDate';
+import getStatusClass from '@Utils/getStatusClass';
 
 class SubnavCheck extends ShellHTML {
   constructor() {
@@ -253,8 +254,8 @@ class SubnavCheck extends ShellHTML {
     const { currentCheckPostId } = useGlobalState('checkpostControl');
     const ifPostChoosed = currentCheckPostId === item.id ? 'choosed__item' : '';
     return `<div class="accordion__item ${ifPostChoosed}" id="${item.id}">
-      <div>
-        <span class="accordion__status">${item.status}</span>
+      <div class="accordion__item__left">
+        <div class="accordion__status ${getStatusClass(item.status)}"></div>
         <span>${item.title}</span>
       </div>
       <span>${item.dday}</span>

@@ -1,16 +1,9 @@
 @import '/src/common/style/mixin.scss';
 @import '/src/common/style/variables.scss';
 
-.subnav {
+.nav {
   @include subnav;
-}
-
-.home {
-  @include main;
-}
-
-.content {
-  @include content;
-
-  overflow: scroll;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  user-select: none;
 }
