@@ -7,10 +7,10 @@ class Home extends ShellHTML {
       css: styleSheet,
       html: `
       <div class="home">
-        <nav class="subnav">
+        <subnav-home></subnav-home>
         </nav>
         <div class="content">
-          home
+          <home-main></home-main>
         </div>
       </div>`,
     };

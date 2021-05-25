@@ -1,13 +1,14 @@
 // Dependencies
 import { render } from '@Lib/shell-html';
 import '@Lib/state';
-import '@Common/style/reset.css';
 
 // Components
 import '@Components/Layout';
 import '@Components/Nav';
 import '@Components/SubnavCheck';
+import '@Components/SubnavHome';
 import '@Components/CheckPost';
+import '@Components/HomeMain';
 
 // Pages
 import '@Pages/calendar';

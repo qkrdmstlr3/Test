@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SubnavHome Component test snapshot 1`] = `
+ShadowRoot {
+  Symbol(SameObject caches): Object {
+    "childNodes": NodeList [
+      <nav
+        class="nav"
+      />,
+      <style>
+        [object Object]
+      </style>,
+    ],
+  },
+}
+`;
