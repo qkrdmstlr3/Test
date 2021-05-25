@@ -20,18 +20,22 @@
   }
 
   &__list {
-    list-style: none;
     padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    list-style: none;
   }
 
   &__item {
+    width: 40%;
     display: flex;
     justify-content: space-between;
     margin: 1rem 0;
     cursor: pointer;
 
     &:hover {
-      opacity: 0.5;
+      color: $deep-blue-color;
     }
 
     &__title {
