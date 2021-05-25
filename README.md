@@ -5,4 +5,5 @@
 <p align="center">
   <a href="https://docs.google.com/spreadsheets/d/1XhAWtlSjUpDebFImlZGrLwwTYkwpWxT1faLhVwtb1pU/edit#gid=0">📋 Feature List </a> |
   <a href="https://docs.google.com/presentation/d/1vm44XRWwOyhoIWJzbJKaXq5-JXr_OrsYN2DtTNslh-U/edit?usp=sharing"> 🖼 UI </a> 
+  <a href="https://github.com/qkrdmstlr3/slly/wiki"> 🔖Wiki </a>
 </p>
