@@ -5,6 +5,7 @@ import {
   createComponent,
   useGlobalState,
   setGlobalState,
+  EventType,
 } from '@Lib/shell-html';
 import styleSheet from './style.scss';
 import { CheckListItemType, CheckPostSummaryType } from '@Types/types';
@@ -31,11 +32,28 @@ class HomeMain extends ShellHTML {
     }
   }
 
-  getTodoItemHTML(posts: CheckPostSummaryType[]): string {
+  clickItemHandler(event: Event): void {
+    if (!(event.target instanceof HTMLElement)) {
+      return;
+    }
+
+    const id = event.target.closest('.todolist__item')?.id.split('-');
+    if (!id) return;
+
+    const [postId, listId] = id;
+
+    setGlobalState('checkpostControl', {
+      currentCheckPostId: postId,
+      currentCheckListId: listId,
+    });
+    setGlobalState('page', 'check');
+  }
+
+  getTodoItemHTML(posts: CheckPostSummaryType[], listId: string): string {
     const html = posts.reduce(
       (acc, item) =>
         (acc += `
-        <li class="todolist__item">
+        <li class="todolist__item" id="${item.id}-${listId}">
           <div>
             <div class="todolist__item__status ${getStatusClass(
               item.status
@@ -53,7 +71,7 @@ class HomeMain extends ShellHTML {
   getTodoListHTML(): string {
     const list: CheckListItemType[] = useGlobalState('checklist');
     const html = list.reduce((acc, item) => {
-      const itemsHTML = this.getTodoItemHTML(item.posts);
+      const itemsHTML = this.getTodoItemHTML(item.posts, item.id);
       return (acc += `
         <div class="todolist">
           <h2 class="todolist__name">${item.name}</h2>
@@ -75,6 +93,13 @@ class HomeMain extends ShellHTML {
           </div>
         </div>`,
       css: styleSheet,
+      eventFuncs: [
+        {
+          className: 'todolist__item',
+          func: this.clickItemHandler,
+          type: EventType.click,
+        },
+      ],
     };
   }
 }

@@ -4,6 +4,33 @@
 .nav {
   @include subnav;
   padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   box-sizing: border-box;
   user-select: none;
+
+  &__date {
+    margin-top: 2rem;
+    font-size: 1.2rem;
+  }
+
+  &__dow {
+    @include center;
+    width: 6rem;
+    height: 6rem;
+    margin: 1.5rem 0;
+
+    color: white;
+    background-color: $deep-blue-color;
+    font-size: 4rem;
+    border-radius: 3rem;
+  }
+
+  &__time {
+    color: $deep-blue-color;
+    font-size: 2.5rem;
+    font-weight: bold;
+  }
 }
