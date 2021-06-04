@@ -13,14 +13,14 @@ export function getDday(endDay: string): string {
   else return `-${dday}`;
 }
 
-export function getToday(): (string | number)[] {
+export function getToday(): string[] {
   const today = new Date();
 
   const hour = `${today.getHours() < 10 ? '0' : ''}${today.getHours()}`;
   const minute = `${today.getMinutes() < 10 ? '0' : ''}${today.getMinutes()}`;
-  const year = today.getFullYear();
-  const month = today.getMonth() + 1;
-  const day = today.getDate();
+  const year = `${today.getFullYear()}`;
+  const month = `${today.getMonth() + 1}`;
+  const day = `${today.getDate()}`;
   const dow = dayList[today.getDay()];
 
   return [hour, minute, year, month, day, dow];

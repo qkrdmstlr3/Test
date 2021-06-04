@@ -25,6 +25,7 @@ class SubnavHome extends ShellHTML {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, minute] = getToday();
     this.setState(minute);
+    //TODO: 하루가 지나면 dday도 다시 계산
   }
 
   render(): RenderType {
@@ -33,9 +34,9 @@ class SubnavHome extends ShellHTML {
     return {
       html: `
       <nav class="nav">
-        <div class="nav__date">${year} . ${month} . ${day}</div>
-        <div class="nav__dow">${dow}</div>
-        <div class="nav__time">${hour} : ${minute}</div>
+        <div class="nav__date" data-testid="date">${year} . ${month} . ${day}</div>
+        <div class="nav__dow" data-testid="dow">${dow}</div>
+        <div class="nav__time" data-testid="time">${hour} : ${minute}</div>
       </nav>
       `,
       css: styleSheet,
