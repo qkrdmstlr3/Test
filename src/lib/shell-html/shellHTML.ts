@@ -8,7 +8,7 @@ class ShellHTML extends HTMLElement {
 
   constructor(state: unknown = null) {
     super();
-    this.state = state; // TODO: 불변성 보장해야됨
+    this.state = state; // TODO: immutability must be guaranteed
 
     this.attachShadow({ mode: 'open' });
     const element = this.render();

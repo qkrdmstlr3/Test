@@ -178,7 +178,7 @@ class SubnavCheck extends ShellHTML {
     });
     setGlobalState('checkposts', [...checkposts, newCheckPost]);
     setGlobalState('checkpostControl', {
-      checkpostControl: this.state.selectedItem,
+      currentCheckListId: this.state.selectedItem,
       currentCheckPostId: newCheckPost.id,
     });
     setGlobalState('checklist', list);
