@@ -136,8 +136,4 @@ describe('CheckPost Component test', () => {
     const changedDate = getDday('2021-07-10');
     expect(changedDdayDiv.innerHTML).toBe(changedDate);
   });
-
-  it('snapshot', () => {
-    expect(checkPostComponent).toMatchSnapshot();
-  });
 });
