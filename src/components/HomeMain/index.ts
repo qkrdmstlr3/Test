@@ -53,7 +53,9 @@ class HomeMain extends ShellHTML {
     const html = posts.reduce(
       (acc, item) =>
         (acc += `
-        <li class="todolist__item" id="${item.id}-${listId}">
+        <li class="todolist__item" id="${item.id}-${listId}" data-testid="${
+          item.id
+        }">
           <div>
             <div class="todolist__item__status ${getStatusClass(
               item.status
@@ -69,12 +71,12 @@ class HomeMain extends ShellHTML {
   }
 
   getTodoListHTML(): string {
-    const list: CheckListItemType[] = useGlobalState('checklist');
+    const list: CheckListItemType[] = useGlobalState('checklist') || [];
     const html = list.reduce((acc, item) => {
       const itemsHTML = this.getTodoItemHTML(item.posts, item.id);
       return (acc += `
         <div class="todolist">
-          <h2 class="todolist__name">${item.name}</h2>
+          <h2 class="todolist__name" data-testid="itemname">${item.name}</h2>
           <ul class="todolist__list">${itemsHTML}</ul>
         </div>
         `);
