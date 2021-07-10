@@ -7,7 +7,7 @@ import {
   RenderType,
   useGlobalState,
   setGlobalState,
-} from '@Lib/shell-html';
+} from 'shell-html';
 import styleSheet from './style.scss';
 import {
   CheckListItemType,

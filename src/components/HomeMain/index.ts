@@ -6,7 +6,7 @@ import {
   useGlobalState,
   setGlobalState,
   EventType,
-} from '@Lib/shell-html';
+} from 'shell-html';
 import styleSheet from './style.scss';
 import { CheckListItemType, CheckPostSummaryType } from '@Types/types';
 import getStatusClass from '@Utils/getStatusClass';
