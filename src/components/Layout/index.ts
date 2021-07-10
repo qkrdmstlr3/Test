@@ -3,7 +3,7 @@ import {
   createComponent,
   useGlobalState,
   RenderType,
-} from '@Lib/shell-html';
+} from 'shell-html';
 import styleSheet from './style.scss';
 
 class Layout extends ShellHTML {

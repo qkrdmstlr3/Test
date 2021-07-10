@@ -7,7 +7,7 @@ import _ from 'lodash';
 /* component, state */
 import CheckPost from '../CheckPost';
 import '@Lib/state';
-import { setGlobalState } from '@Lib/shell-html';
+import { setGlobalState } from 'shell-html';
 
 let checkPost: CheckPost;
 let checkPostComponent: HTMLElement;

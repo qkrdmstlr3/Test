@@ -1,4 +1,4 @@
-import { state } from '@Lib/shell-html';
+import { state } from 'shell-html';
 
 state({
   key: 'page',

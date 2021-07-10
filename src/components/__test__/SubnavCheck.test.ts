@@ -6,7 +6,7 @@ import _ from 'lodash';
 /* component, state */
 import SubnavCheck from '../SubnavCheck';
 import '@Lib/state';
-import { useGlobalState, setGlobalState } from '@Lib/shell-html';
+import { useGlobalState, setGlobalState } from 'shell-html';
 
 let subnav: SubnavCheck;
 let subnavComponent: HTMLElement;

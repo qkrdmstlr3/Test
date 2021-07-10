@@ -1,5 +1,5 @@
 // Dependencies
-import { render } from '@Lib/shell-html';
+import { render } from 'shell-html';
 import '@Lib/state';
 
 // Components

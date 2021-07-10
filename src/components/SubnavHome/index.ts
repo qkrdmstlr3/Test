@@ -1,4 +1,4 @@
-import { ShellHTML, createComponent, RenderType } from '@Lib/shell-html';
+import { ShellHTML, createComponent, RenderType } from 'shell-html';
 import styleSheet from './style.scss';
 import { getToday } from '@Utils/calcDate';
 
