@@ -5,7 +5,7 @@ import {
   useGlobalState,
   setGlobalState,
   RenderType,
-} from '@Lib/shell-html';
+} from 'shell-html';
 import styleSheet from './style.scss';
 
 class Nav extends ShellHTML {

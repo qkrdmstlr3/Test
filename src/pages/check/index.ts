@@ -1,4 +1,4 @@
-import { ShellHTML, createComponent } from '@Lib/shell-html';
+import { ShellHTML, createComponent } from 'shell-html';
 import styleSheet from './style.scss';
 
 class Check extends ShellHTML {

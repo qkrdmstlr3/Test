@@ -5,7 +5,7 @@ import {
   useGlobalState,
   setGlobalState,
   EventType,
-} from '@Lib/shell-html';
+} from 'shell-html';
 import styleSheet from './style.scss';
 import { CheckListItemType, CheckPostType } from '@Types/types';
 import { CheckPostStatusType, CheckPostSummaryAttrName } from '@Types/enum';
@@ -68,11 +68,11 @@ class CheckPost extends ShellHTML {
    * EventHandler
    */
   savePost(): void {
-    const title = this.getElement('title');
-    const status = this.getElement('status');
-    const startDate = this.getElement('startdate') as HTMLInputElement;
-    const endDate = this.getElement('enddate') as HTMLInputElement;
-    const content = this.getElement('content');
+    const title = this.getElementById('title');
+    const status = this.getElementById('status');
+    const startDate = this.getElementById('startdate') as HTMLInputElement;
+    const endDate = this.getElementById('enddate') as HTMLInputElement;
+    const content = this.getElementById('content');
     const postId = useGlobalState('checkpostControl').currentCheckPostId;
 
     const posts: CheckPostType[] = _.cloneDeep(useGlobalState('checkposts'));
@@ -129,7 +129,7 @@ class CheckPost extends ShellHTML {
   }
 
   addTextBoxHandler(): void {
-    const content = this.getElement('content');
+    const content = this.getElementById('content');
     const textBox = `
     <div class="box">
       <div contenteditable="true">새 상자</div>
@@ -143,7 +143,7 @@ class CheckPost extends ShellHTML {
   }
 
   addCheckBoxHandler(): void {
-    const content = this.getElement('content');
+    const content = this.getElementById('content');
     const checkBox = `
     <div class="box">
       <div class="checkbox">
@@ -164,7 +164,7 @@ class CheckPost extends ShellHTML {
 
     const parentTag = event.target.closest('.box');
     if (parentTag) {
-      const content = this.getElement('content');
+      const content = this.getElementById('content');
       content?.removeChild(parentTag);
     }
   }
@@ -172,7 +172,7 @@ class CheckPost extends ShellHTML {
   endDateChangeHandler(event: Event): void {
     if (!(event.target instanceof HTMLInputElement)) return;
 
-    const dday = this.getElement('dday');
+    const dday = this.getElementById('dday');
     if (!dday) return;
     dday.innerHTML = getDday(event.target?.value);
   }
@@ -236,7 +236,7 @@ class CheckPost extends ShellHTML {
         newClass: 'status__todo',
       },
     };
-    const statusComponent = this.getElement('status');
+    const statusComponent = this.getElementById('status');
     if (!statusComponent) return;
 
     const { status, oldClass, newClass } = nextStatus[

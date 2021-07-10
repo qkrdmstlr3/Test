@@ -5,7 +5,7 @@ import '@testing-library/jest-dom/extend-expect';
 /* component, state */
 import HomeMain from '../HomeMain';
 import '@Lib/state';
-import { setGlobalState } from '@Lib/shell-html';
+import { setGlobalState } from 'shell-html';
 
 let homemain: HomeMain;
 let homemainComponent: HTMLElement;
