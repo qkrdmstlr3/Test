@@ -10,7 +10,7 @@ class Calendar extends ShellHTML {
         <nav class="subnav">
         </nav>
         <div class="content">
-          calendar
+          <calendar-main></calendar-main>
         </div>
       </div>`,
     };
