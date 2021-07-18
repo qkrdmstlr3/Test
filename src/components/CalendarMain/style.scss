@@ -1,0 +1,77 @@
+@import '/src/common/style/mixin.scss';
+@import '/src/common/style/variables.scss';
+
+#container {
+  padding: 0 15px;
+
+  header {
+    width: 100%;
+    -webkit-app-region: drag;
+
+    > .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      > .date-nav {
+        display: flex;
+
+        button {
+          color: $deep-blue-color;
+          cursor: pointer;
+          border: none;
+          background-color: transparent;
+          outline: none;
+
+          font-size: 2.5rem;
+
+          &:active {
+            color: $blue-color;
+          }
+        }
+
+        > .date {
+          margin: 0 25px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          .month {
+            font-size: 1.8rem;
+          }
+        }
+      }
+
+      > .add-btn {
+        @include center;
+        width: 2rem;
+        height: 2rem;
+        padding: 0;
+        border-radius: 1rem;
+        outline: none;
+        font-size: 2rem;
+        border: 2px solid white;
+
+        color: $deep-blue-color;
+        background-color: white;
+        border-left-color: $blue-color;
+        border-top-color: $blue-color;
+        border-right-color: $deep-blue-color;
+        border-bottom-color: $deep-blue-color;
+        cursor: pointer;
+
+        &:active {
+          border-left-color: $deep-blue-color;
+          border-top-color: $deep-blue-color;
+          border-right-color: $blue-color;
+          border-bottom-color: $blue-color;
+        }
+      }
+    }
+
+    > .year {
+      display: block;
+      text-align: center;
+    }
+  }
+}
