@@ -10,6 +10,7 @@ import '@Components/SubnavHome';
 import '@Components/CheckPost';
 import '@Components/HomeMain';
 import '@Components/CalendarMain';
+import '@Components/CalendarMain/Calendar';
 
 // Pages
 import '@Pages/calendar';
