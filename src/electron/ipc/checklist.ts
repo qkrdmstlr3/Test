@@ -2,6 +2,7 @@ import { ipcMain, BrowserWindow } from 'electron';
 import { db } from '../db';
 import { getDday } from '../../utils/calcDate';
 import { CheckPostSummaryType } from '../../types/types';
+import { CheckPostStatusType } from '@Types/enum';
 
 export default function checkListIpcMain(mainWindow: BrowserWindow): void {
   ipcMain.on('checklist:read:all', async () => {
@@ -29,7 +30,7 @@ export default function checkListIpcMain(mainWindow: BrowserWindow): void {
             id: postId as string,
             title: title as string,
             dday: getDday(endDate as string),
-            status: status as string,
+            status: status as CheckPostStatusType,
           };
           newItem.posts.push(newPost);
         }
