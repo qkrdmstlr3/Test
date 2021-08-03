@@ -1,8 +1,34 @@
-import { ShellHTML, createComponent } from 'shell-html';
+import {
+  ShellHTML,
+  createComponent,
+  useGlobalState,
+  setGlobalState,
+  EventType,
+} from 'shell-html';
 import styleSheet from './style.scss';
 
 class Calendar extends ShellHTML {
+  connectedCallback() {
+    this.enrollObserving('dateInfo');
+  }
+
+  disconnectedCallback() {
+    this.releaseObserving('dateInfo');
+  }
+
+  changeMonthHandler(value: number) {
+    return () => {
+      const dateInfo = useGlobalState('dateInfo');
+      const newDate = new Date(
+        dateInfo.date.setMonth(dateInfo.date.getMonth() + value)
+      );
+      setGlobalState('dateInfo', { ...dateInfo, date: newDate });
+    };
+  }
+
   render() {
+    const { date } = useGlobalState('dateInfo');
+
     return {
       html: `
         <div id="container">
@@ -12,8 +38,8 @@ class Calendar extends ShellHTML {
               <div class="date-nav">
                 <button class="back-btn"><</button>
                 <div class="date">
-                  <span class="year">2021</span>
-                  <span class="month">3월</span>
+                  <span class="year">${date.getFullYear()}</span>
+                  <span class="month">${date.getMonth() + 1}월</span>
                 </div>
                 <button class="ahead-btn">></button>
               </div>
@@ -23,7 +49,18 @@ class Calendar extends ShellHTML {
         </div>
       `,
       css: styleSheet,
-      eventFuncs: [],
+      eventFuncs: [
+        {
+          className: 'back-btn',
+          func: this.changeMonthHandler(-1),
+          type: EventType.click,
+        },
+        {
+          className: 'ahead-btn',
+          func: this.changeMonthHandler(1),
+          type: EventType.click,
+        },
+      ],
     };
   }
 }

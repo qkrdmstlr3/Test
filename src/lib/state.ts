@@ -2,7 +2,7 @@ import { state } from 'shell-html';
 
 state({
   key: 'page',
-  initial: 'home',
+  initial: 'calendar',
 });
 
 state({
@@ -21,4 +21,11 @@ state({
 state({
   key: 'checkposts',
   initial: [],
+});
+
+state({
+  key: 'dateInfo',
+  initial: {
+    date: new Date(),
+  },
 });
