@@ -46,6 +46,7 @@ class Calendar extends ShellHTML {
               <button class="add-btn">+</button>
             </div>
           </header>
+          <calendar-calendar></calendar-calendar>
         </div>
       `,
       css: styleSheet,
