@@ -27,5 +27,8 @@ state({
   key: 'dateInfo',
   initial: {
     date: new Date(),
+    selectedYear: null,
+    selectedMonth: null,
+    selectedDay: null,
   },
 });

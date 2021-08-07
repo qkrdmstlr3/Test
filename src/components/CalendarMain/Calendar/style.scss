@@ -17,6 +17,7 @@
       box-sizing: border-box;
       border: 0.5px solid $deep-blue-color;
       cursor: pointer;
+      font-weight: bold;
 
       > .today {
         display: inline-block;
@@ -27,6 +28,14 @@
         box-sizing: border-box;
 
         @include center;
+      }
+
+      > .saturday {
+        color: $deep-blue-color;
+      }
+
+      > .sunday {
+        color: $red-color;
       }
     }
 

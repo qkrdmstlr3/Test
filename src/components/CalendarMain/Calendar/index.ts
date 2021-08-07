@@ -1,4 +1,10 @@
-import { ShellHTML, createComponent, useGlobalState } from 'shell-html';
+import {
+  ShellHTML,
+  createComponent,
+  useGlobalState,
+  setGlobalState,
+  EventType,
+} from 'shell-html';
 import styleSheet from './style.scss';
 
 const SIX_WEEK = new Array(6).fill(0);
@@ -13,12 +19,30 @@ class Calendar extends ShellHTML {
     this.releaseObserving('dateInfo');
   }
 
+  selectDayHandler(event: Event): void {
+    if (!(event.target instanceof HTMLElement)) return;
+    console.log('called', event.target);
+
+    const id = event.target.id;
+    if (!id) return;
+
+    const dateInfo = useGlobalState('dateInfo');
+    const [year, month, day] = id.split('-');
+    setGlobalState('dateInfo', {
+      ...dateInfo,
+      selectedYear: Number(year),
+      selectedMonth: Number(month),
+      selectedDay: Number(day),
+    });
+  }
+
   makeCalendar() {
-    const { date }: { date: Date } = useGlobalState('dateInfo');
+    const { date, selectedYear, selectedMonth, selectedDay } = useGlobalState(
+      'dateInfo'
+    );
     const today = new Date();
     const year = date.getFullYear();
     const month = date.getMonth();
-    const day = date.getDay();
 
     const lastDate = new Date(year, month, 0);
     const startDate = new Date(year, month, 1);
@@ -31,12 +55,28 @@ class Calendar extends ShellHTML {
       const daysOfWeek = SEVEN_DAYS.reduce((week, _, dow) => {
         if (dow === startDOW) dayCountStart = true;
 
+        const isSaturday = dow === 6 && 'saturday';
+        const isSunday = dow === 0 && 'sunday';
         const dayBox = dayCountStart && dayCount <= lastDay;
+        const dayId = `${year}-${month}-${dayCount}`;
         const isToday =
-          day === dayCount && month === today.getMonth() && 'today';
+          dayCount === today.getDate() &&
+          month === today.getMonth() &&
+          year === today.getFullYear() &&
+          'today';
+        const isSelectedDay =
+          year === selectedYear &&
+          month === selectedMonth &&
+          dayCount === selectedDay &&
+          'selected';
+
         return (week += `
-        <div class="box">
-          ${dayBox ? `<span class="day ${isToday}">${dayCount++}</span>` : ''}
+        <div class="box ${isSelectedDay}" id="${dayId}">
+          ${
+            dayBox
+              ? `<span class="day ${isToday} ${isSaturday} ${isSunday}">${dayCount++}</span>`
+              : ''
+          }
         </div>`);
       }, '');
       const weekHTML = `<div class="week">${daysOfWeek}</div>`;
@@ -51,6 +91,13 @@ class Calendar extends ShellHTML {
     return {
       html: `<div id="calendar">${calendarHTML}</div>`,
       css: styleSheet,
+      eventFuncs: [
+        {
+          className: 'box',
+          func: this.selectDayHandler,
+          type: EventType.click,
+        },
+      ],
     };
   }
 }
