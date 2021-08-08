@@ -7,6 +7,9 @@ import {
 } from 'shell-html';
 import styleSheet from './style.scss';
 import { ipcRenderer } from 'electron';
+import { CheckPostSummaryCalendarType } from '@Types/types';
+import { getCalendarIndexWithPost } from '@Utils/calcDate';
+import { CheckPostStatusType } from '@Types/enum';
 
 const SIX_WEEK = new Array(6).fill(0);
 const SEVEN_DAYS = new Array(7).fill(0);
@@ -25,7 +28,6 @@ class Calendar extends ShellHTML {
     const dateInfo = useGlobalState('dateInfo');
     if (dateInfo.date.getMonth() + 1 === dateInfo.postsInDate.month) return;
 
-    console.log('called');
     ipcRenderer?.send('checkpost:getPosts:date', {
       year: dateInfo.date.getFullYear(),
       month: dateInfo.date.getMonth() + 1,
@@ -35,7 +37,6 @@ class Calendar extends ShellHTML {
         ...dateInfo,
         postsInDate,
       });
-      console.log(postsInDate);
     });
   }
 
@@ -55,13 +56,72 @@ class Calendar extends ShellHTML {
     });
   }
 
+  getPostsSortedByDay(
+    posts: CheckPostSummaryCalendarType[],
+    year: number,
+    month: number
+  ) {
+    const postsSortedByDay: {
+      [day: string]: { id: string; status: CheckPostStatusType }[];
+    } = {};
+    for (let i = 1; i <= 31; i += 1) {
+      postsSortedByDay[`${i}`] = [];
+    }
+
+    posts.forEach((post) => {
+      const [start, end] = getCalendarIndexWithPost(
+        post.startDate,
+        post.endDate,
+        year,
+        month
+      );
+      for (let i = start; i <= end; i += 1) {
+        postsSortedByDay[`${i}`].push({ id: post.id, status: post.status });
+      }
+    });
+    return postsSortedByDay;
+  }
+
+  /**
+   * HTML
+   */
+  getPostStatus(status: CheckPostStatusType, id: string): string {
+    const statusList = {
+      [CheckPostStatusType.todo]: {
+        className: 'status__todo',
+      },
+      [CheckPostStatusType.doing]: {
+        className: 'status__doing',
+      },
+      [CheckPostStatusType.done]: {
+        className: 'status__done',
+      },
+    };
+
+    const { className } = statusList[status];
+    return `<li id="${id}" class="post__status ${className}" data-testid="status"></li>`;
+  }
+
+  getPostsInBoxHTML(posts: { id: string; status: CheckPostStatusType }[]) {
+    if (!posts) return '';
+    return posts.reduce((acc, post) => {
+      return (acc += this.getPostStatus(post.status, post.id));
+    }, '');
+  }
+
   makeCalendar() {
-    const { date, selectedYear, selectedMonth, selectedDay } = useGlobalState(
-      'dateInfo'
-    );
+    const {
+      date,
+      selectedYear,
+      selectedMonth,
+      selectedDay,
+      postsInDate: { posts },
+    } = useGlobalState('dateInfo');
+
     const today = new Date();
     const year = date.getFullYear();
     const month = date.getMonth();
+    const postsSortedByDay = this.getPostsSortedByDay(posts, year, month + 1);
 
     const lastDate = new Date(year, month, 0);
     const startDate = new Date(year, month, 1);
@@ -93,7 +153,12 @@ class Calendar extends ShellHTML {
         <div class="box ${isSelectedDay}" id="${dayId}">
           ${
             dayBox
-              ? `<span class="day ${isToday} ${isSaturday} ${isSunday}">${dayCount++}</span>`
+              ? `
+                <span class="day ${isToday} ${isSaturday} ${isSunday}">${dayCount}</span>
+                <ul>
+                  ${this.getPostsInBoxHTML(postsSortedByDay[dayCount++])}
+                </ul>  
+              `
               : ''
           }
         </div>`);

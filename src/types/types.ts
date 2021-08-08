@@ -7,6 +7,15 @@ export interface CheckPostSummaryType {
   status: CheckPostStatusType;
 }
 
+export interface CheckPostSummaryCalendarType {
+  id: string;
+  listId: string;
+  startDate: string;
+  status: CheckPostStatusType;
+  title: string;
+  endDate: string;
+}
+
 export interface CheckListItemType {
   id: string;
   name: string;

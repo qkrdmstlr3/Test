@@ -17,16 +17,23 @@ export default function checkListIpcMain(mainWindow: BrowserWindow): void {
 
   ipcMain.on('checkpost:getPosts:date', async (event, data) => {
     const { year, month } = data;
-    const monthWithPad = `${month}`.padStart(2, '0');
     const posts = await db.checkpost?.find(
-      {
-        startDate: { $gte: `${year}-${monthWithPad}-1` },
-        endDate: { $lte: `${year}-${monthWithPad}-31` },
-      },
+      {},
       { id: 1, title: 1, status: 1, endDate: 1, startDate: 1, listId: 1 }
     );
+    const filteredPost = posts?.filter((post) => {
+      const [year1, month1] = (post.startDate as string).split('-');
+      const [year2, month2] = (post.endDate as string).split('-');
+      if (
+        Number(year1) <= year &&
+        Number(year2) >= year &&
+        Number(month1) <= month &&
+        Number(month2) >= month
+      )
+        return true;
+    });
 
-    const result = { posts, month };
+    const result = { posts: filteredPost, month };
     if (mainWindow) {
       mainWindow.webContents.send('checkpost:getPosts:date', result);
     }
