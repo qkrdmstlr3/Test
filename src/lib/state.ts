@@ -2,7 +2,7 @@ import { state } from 'shell-html';
 
 state({
   key: 'page',
-  initial: 'calendar',
+  initial: 'home',
 });
 
 state({
