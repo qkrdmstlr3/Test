@@ -3,10 +3,12 @@ import {
   createComponent,
   RenderType,
   useGlobalState,
+  EventType,
 } from 'shell-html';
 import styleSheet from './style.scss';
 import { CheckPostStatusType } from '@Types/enum';
 import { CheckPostSummaryCalendarType } from '@Types/types';
+import { setGlobalState } from 'shell-html';
 
 class SubnavCalendar extends ShellHTML {
   connectedCallback(): void {
@@ -42,6 +44,19 @@ class SubnavCalendar extends ShellHTML {
     return postsInSelectedDate;
   }
 
+  clickPostItemHandler(event: Event): void {
+    if (!(event.target instanceof HTMLElement)) return;
+
+    const id = event.target.closest('.post-item')?.id;
+    if (!id) return;
+
+    const dateInfo = useGlobalState('dateInfo');
+    setGlobalState('dateInfo', {
+      ...dateInfo,
+      selectedPostId: id,
+    });
+  }
+
   /**
    * HTML
    */
@@ -63,11 +78,13 @@ class SubnavCalendar extends ShellHTML {
   }
 
   getPostsHTML(posts: CheckPostSummaryCalendarType[]): string {
+    const { selectedPostId } = useGlobalState('dateInfo');
     return posts.reduce((acc, post) => {
+      const selectedPost = selectedPostId === post.id && 'selected';
       return (
         acc +
         `
-      <div class="post-item">
+      <div id=${post.id} class="post-item ${selectedPost}">
         <span>${post.title}</span>
         ${this.getPostStatus(post.status)}
       </div>
@@ -102,7 +119,13 @@ class SubnavCalendar extends ShellHTML {
       </nav>
       `,
       css: styleSheet,
-      eventFuncs: [],
+      eventFuncs: [
+        {
+          className: 'post-item',
+          func: this.clickPostItemHandler,
+          type: EventType.click,
+        },
+      ],
     };
   }
 }

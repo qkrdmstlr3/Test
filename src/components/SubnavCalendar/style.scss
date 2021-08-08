@@ -37,7 +37,10 @@
       justify-content: space-between;
       align-items: center;
       padding: 7px 0;
+
       border-bottom: 1px solid $blue-color;
+      font-weight: bold;
+      cursor: pointer;
 
       #status {
         @include center;
@@ -46,6 +49,10 @@
         height: 1.6rem;
         border-radius: 0.8rem;
       }
+    }
+
+    > .selected {
+      color: $deep-blue-color;
     }
   }
 }

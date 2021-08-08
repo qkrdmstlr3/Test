@@ -50,6 +50,7 @@ class Calendar extends ShellHTML {
     const [year, month, day] = id.split('-');
     setGlobalState('dateInfo', {
       ...dateInfo,
+      selectedPostId: '',
       selectedYear: Number(year),
       selectedMonth: Number(month),
       selectedDay: Number(day),
@@ -103,10 +104,15 @@ class Calendar extends ShellHTML {
   }
 
   getPostsInBoxHTML(posts: { id: string; status: CheckPostStatusType }[]) {
-    if (!posts) return '';
-    return posts.reduce((acc, post) => {
+    let isContainSelectedPost = false;
+    if (!posts) return { html: '', isContainSelectedPost };
+
+    const { selectedPostId } = useGlobalState('dateInfo');
+    const postsHTML = posts.reduce((acc, post) => {
+      if (post.id === selectedPostId) isContainSelectedPost = true;
       return (acc += this.getPostStatus(post.status, post.id));
     }, '');
+    return { html: postsHTML, isContainSelectedPost };
   }
 
   makeCalendar() {
@@ -133,30 +139,36 @@ class Calendar extends ShellHTML {
     const calendar = SIX_WEEK.reduce((html) => {
       const daysOfWeek = SEVEN_DAYS.reduce((week, _, dow) => {
         if (dow === startDOW) dayCountStart = true;
+        const { html, isContainSelectedPost } = this.getPostsInBoxHTML(
+          postsSortedByDay[dayCount]
+        );
 
         const isSaturday = dow === 6 && 'saturday';
         const isSunday = dow === 0 && 'sunday';
         const dayBox = dayCountStart && dayCount <= lastDay;
         const dayId = `${year}-${month}-${dayCount}`;
         const isToday =
+          dayBox &&
           dayCount === today.getDate() &&
           month === today.getMonth() &&
           year === today.getFullYear() &&
           'today';
         const isSelectedDay =
+          dayBox &&
           year === selectedYear &&
           month === selectedMonth &&
           dayCount === selectedDay &&
           'selected';
-
+        const isSelectedPost =
+          dayBox && isContainSelectedPost && 'selected-post';
         return (week += `
-        <div class="box ${isSelectedDay}" id="${dayId}">
+        <div class="box ${isSelectedPost} ${isSelectedDay}" id="${dayId}">
           ${
             dayBox
               ? `
-                <span class="day ${isToday} ${isSaturday} ${isSunday}">${dayCount}</span>
+                <span class="day ${isToday} ${isSaturday} ${isSunday}">${dayCount++}</span>
                 <ul>
-                  ${this.getPostsInBoxHTML(postsSortedByDay[dayCount++])}
+                  ${html}
                 </ul>  
               `
               : ''

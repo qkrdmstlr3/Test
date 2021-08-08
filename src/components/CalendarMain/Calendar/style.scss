@@ -56,8 +56,12 @@
       }
     }
 
+    > .selected-post {
+      background-color: $blue-color;
+    }
+
     > .selected {
-      background-color: $more-blue-color;
+      background-color: $more-blue-color !important;
     }
   }
 }

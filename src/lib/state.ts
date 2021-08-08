@@ -34,5 +34,6 @@ state({
       month: null,
       posts: [],
     },
+    selectedPostId: '',
   },
 });
