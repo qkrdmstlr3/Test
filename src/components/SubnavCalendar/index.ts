@@ -6,15 +6,7 @@ import {
 } from 'shell-html';
 import styleSheet from './style.scss';
 import { CheckPostStatusType } from '@Types/enum';
-
-interface SummarizedPostType {
-  id: string;
-  listId: string;
-  startDate: string;
-  status: CheckPostStatusType;
-  title: string;
-  endDate: string;
-}
+import { CheckPostSummaryCalendarType } from '@Types/types';
 
 class SubnavCalendar extends ShellHTML {
   connectedCallback(): void {
@@ -25,18 +17,28 @@ class SubnavCalendar extends ShellHTML {
     this.releaseObserving('dateInfo');
   }
 
-  getPostsInSelectedDate(): SummarizedPostType[] {
+  getPostsInSelectedDate(): CheckPostSummaryCalendarType[] {
     const {
+      selectedYear,
+      selectedMonth,
       selectedDay,
       postsInDate: { posts },
     } = useGlobalState('dateInfo');
-    const postsInSelectedDate = posts.filter((post: SummarizedPostType) => {
-      const startDate = new Date(post.startDate);
-      const endDate = new Date(post.endDate);
-      return (
-        startDate.getDate() <= selectedDay && endDate.getDate() >= selectedDay
-      );
-    });
+    const postsInSelectedDate = posts.filter(
+      (post: CheckPostSummaryCalendarType) => {
+        const selectedDate = new Date(
+          `${selectedYear}-0${selectedMonth}-${selectedDay}`
+        );
+        const startDate = new Date(post.startDate);
+        const endDate = new Date(post.endDate);
+        startDate.setMonth(startDate.getMonth() - 1);
+        endDate.setMonth(endDate.getMonth() - 1);
+        return (
+          startDate.getTime() <= selectedDate.getTime() &&
+          endDate.getTime() >= selectedDate.getTime()
+        );
+      }
+    );
     return postsInSelectedDate;
   }
 
@@ -60,7 +62,7 @@ class SubnavCalendar extends ShellHTML {
     return `<div id="status" class="post__status ${className}" data-testid="status"></div>`;
   }
 
-  getPostsHTML(posts: SummarizedPostType[]): string {
+  getPostsHTML(posts: CheckPostSummaryCalendarType[]): string {
     return posts.reduce((acc, post) => {
       return (
         acc +
