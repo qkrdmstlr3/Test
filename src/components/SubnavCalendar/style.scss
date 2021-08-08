@@ -1,6 +1,8 @@
 @import '/src/common/style/mixin.scss';
 @import '/src/common/style/variables.scss';
 
+@include status;
+
 .nav {
   @include subnav;
   padding: 0 1rem;
@@ -20,8 +22,30 @@
 
     > h2 {
       margin-top: 20px;
+      margin-bottom: 30px;
       text-align: center;
       font-size: 80px;
+    }
+  }
+
+  > .post-list {
+    width: 100%;
+    list-style: none;
+
+    > .post-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 0;
+      border-bottom: 1px solid $blue-color;
+
+      #status {
+        @include center;
+
+        width: 1.6rem;
+        height: 1.6rem;
+        border-radius: 0.8rem;
+      }
     }
   }
 }
