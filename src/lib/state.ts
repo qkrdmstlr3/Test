@@ -30,5 +30,9 @@ state({
     selectedYear: null,
     selectedMonth: null,
     selectedDay: null,
+    postsInDate: {
+      month: null,
+      posts: [],
+    },
   },
 });
