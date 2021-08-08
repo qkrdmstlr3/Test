@@ -25,3 +25,41 @@ export function getToday(): string[] {
 
   return [hour, minute, year, month, day, dow];
 }
+
+export function isTwoDateInSameMonth(
+  startdate: string,
+  enddate: string
+): boolean {
+  const [year1, month1, day1] = startdate.split('-');
+  const [year2, month2, day2] = enddate.split('-');
+
+  if (year1 !== year2 || month1 !== month2) return false;
+  if (day1 > day2) return false;
+  return true;
+}
+
+export function getCalendarIndexWithPost(
+  startdate: string,
+  enddate: string,
+  year: number,
+  month: number
+): number[] {
+  const [startyear, startmonth, startday] = startdate
+    .split('-')
+    .map((date) => Number(date));
+  const [endyear, endmonth, endday] = enddate
+    .split('-')
+    .map((date) => Number(date));
+  // 이번달에 시작과 끝
+  if (startyear === endyear && startmonth === endmonth)
+    return [startday, endday];
+
+  // 이번달에 시작
+  if (startyear === year && startmonth === month) return [startday, 31];
+
+  // 이번달에 끝남
+  if (endyear === year && endmonth === month) return [1, endday];
+
+  // 사이 달
+  return [1, 31];
+}
