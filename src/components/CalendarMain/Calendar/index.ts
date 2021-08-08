@@ -6,6 +6,7 @@ import {
   EventType,
 } from 'shell-html';
 import styleSheet from './style.scss';
+import { ipcRenderer } from 'electron';
 
 const SIX_WEEK = new Array(6).fill(0);
 const SEVEN_DAYS = new Array(7).fill(0);
@@ -13,15 +14,33 @@ const SEVEN_DAYS = new Array(7).fill(0);
 class Calendar extends ShellHTML {
   connectedCallback() {
     this.enrollObserving('dateInfo');
+    this.getPostsWithDate();
   }
 
   disconnectedCallback() {
     this.releaseObserving('dateInfo');
   }
 
+  getPostsWithDate() {
+    const dateInfo = useGlobalState('dateInfo');
+    if (dateInfo.date.getMonth() + 1 === dateInfo.postsInDate.month) return;
+
+    console.log('called');
+    ipcRenderer?.send('checkpost:getPosts:date', {
+      year: dateInfo.date.getFullYear(),
+      month: dateInfo.date.getMonth() + 1,
+    });
+    ipcRenderer?.once('checkpost:getPosts:date', (event, postsInDate) => {
+      setGlobalState('dateInfo', {
+        ...dateInfo,
+        postsInDate,
+      });
+      console.log(postsInDate);
+    });
+  }
+
   selectDayHandler(event: Event): void {
     if (!(event.target instanceof HTMLElement)) return;
-    console.log('called', event.target);
 
     const id = event.target.id;
     if (!id) return;
